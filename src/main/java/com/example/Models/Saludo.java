@@ -1,4 +1,4 @@
-package com.example;
+package com.example.Models;
 
 /**
  * Created by Robert on 02/04/2017.

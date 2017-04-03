@@ -1,4 +1,4 @@
-package com.example;
+package com.example.daos;
 
 /**
  * Created by Robert on 03/04/2017.
@@ -7,7 +7,7 @@ package com.example;
 
 import javax.transaction.Transactional;
 
-import com.example.User;
+import com.example.Models.Notification;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -20,13 +20,13 @@ import org.springframework.data.repository.CrudRepository;
  * @author netgloo
  */
 @Transactional
-public interface UserDao extends CrudRepository<User, Long> {
+public interface NotificationDao extends CrudRepository<Notification, Long> {
 
     /**
      * Return the user having the passed pass or null if no user is found.
      *
-     * @param pass the user pass.
+     * @param id the user pass.
      */
-    public User findByPass(String pass);
+    public Notification findById(int id);
 
-} // class UserDao
+} // class NotificationDao
