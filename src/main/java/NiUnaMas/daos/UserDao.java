@@ -1,6 +1,6 @@
-package com.example.daos;
+package NiUnaMas.daos;
 
-import com.example.Models.User;
+import NiUnaMas.Models.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,6 +13,6 @@ import java.util.List;
 
 @Transactional
 public interface UserDao extends CrudRepository<User, Long> {
-    @Query(value = "SELECT * FROM User", nativeQuery = true)
+    @Query("select user from User user where user.email = ?1 and user.password = ?2")
     List<User> miFuncion(String email, String password);
 }

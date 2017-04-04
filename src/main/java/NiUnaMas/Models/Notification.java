@@ -1,16 +1,11 @@
-package com.example.Models;
+package NiUnaMas.Models;
 
 /**
  * Created by Robert on 03/04/2017.
  */
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 
 /**
  * @author robert
@@ -22,6 +17,9 @@ public class Notification {
     /////
     // Private..
     /////
+    @ManyToOne
+    @JoinColumn(name = "user_dni")
+    private User user;
     // Notification's id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -87,11 +85,19 @@ public class Notification {
     }
 
     public double getCoordY() {
-        return coordX;
+        return coordY;
     }
 
     public void setCoordY(double coordY) {
         this.coordY = coordY;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 } // class Notification

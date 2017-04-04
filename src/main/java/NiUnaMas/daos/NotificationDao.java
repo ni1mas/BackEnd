@@ -1,4 +1,4 @@
-package com.example.daos;
+package NiUnaMas.daos;
 
 /**
  * Created by Robert on 03/04/2017.
@@ -7,7 +7,7 @@ package com.example.daos;
 
 import javax.transaction.Transactional;
 
-import com.example.Models.Notification;
+import NiUnaMas.Models.Notification;
 import org.springframework.data.repository.CrudRepository;
 
 /**

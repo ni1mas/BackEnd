@@ -1,10 +1,10 @@
-package com.example.Controller;
+package NiUnaMas.Controller;
 
-import com.example.Models.Notification;
-import com.example.Models.User;
-import com.example.Varios.Uris;
-import com.example.daos.UserDao;
+import NiUnaMas.Models.User;
+import NiUnaMas.Varios.Uris;
+import NiUnaMas.daos.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +20,8 @@ import java.util.List;
 public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public boolean login(@RequestParam("email") String email, @RequestParam("pass") String password) {
+    public boolean login(@RequestParam("email") String email, @RequestParam("pass") String password,
+                         ModelMap model) {
         List<User> list;
         try {
             list = userDao.miFuncion(email, password);

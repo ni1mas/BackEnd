@@ -1,7 +1,10 @@
-package com.example.Models;
+package NiUnaMas.Models;
+
+import org.springframework.web.bind.annotation.Mapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 
 /**
@@ -25,15 +28,16 @@ public class User {
     public User(){
 
     }
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Id
+    @Column(unique=true)
     private String DNI;
     @NotNull
     private String name;
     @NotNull
     private String fname;
-    @NotNull
+    @Column(unique=true)
     private int phone;
     private int phone2;
     @Column(unique=true)

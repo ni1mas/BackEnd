@@ -1,13 +1,13 @@
-package com.example.Controller;
+package NiUnaMas.Controller;
 
 /**
  * Created by Robert on 03/04/2017.
  */
 
 
-    import com.example.Models.Notification;
-    import com.example.daos.NotificationDao;
-    import com.example.Varios.Uris;
+    import NiUnaMas.Models.Notification;
+    import NiUnaMas.daos.NotificationDao;
+    import NiUnaMas.Varios.Uris;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.web.bind.annotation.RequestMapping;
     import org.springframework.web.bind.annotation.RequestMethod;
