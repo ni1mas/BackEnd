@@ -8,6 +8,9 @@ package NiUnaMas.daos;
 import javax.transaction.Transactional;
 
 import NiUnaMas.Models.Notification;
+import NiUnaMas.Models.User;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -22,11 +25,10 @@ import org.springframework.data.repository.CrudRepository;
 @Transactional
 public interface NotificationDao extends CrudRepository<Notification, Long> {
 
-    /**
-     * Return the user having the passed pass or null if no user is found.
-     *
-     * @param id the user pass.
-     */
-    public Notification findById(int id);
+    Notification getByUser(User user);
+
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update notification n set n.type = ?1 WHERE n.user_dni = ?2", nativeQuery = true)
+    int updateByIdMine(int type, String id);
 
 } // class NotificationDao

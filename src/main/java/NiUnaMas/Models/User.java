@@ -35,8 +35,8 @@ public class User {
 
     }
 
-    private String id;
     @Id
+    private String id;
     @Column(unique=true)
     private String DNI;
     @NotNull
@@ -130,6 +130,7 @@ public class User {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
         buffer.putLong(random);
         String hashed = java.util.Base64.getEncoder().encodeToString(DigestUtils.sha512(buffer.array()));
+        hashed = hashed.replaceAll("/", "p");
         return hashed;
     }
 }

@@ -24,7 +24,7 @@ public class UserController {
                          ModelMap model) {
         User user;
         try {
-            user = userDao.miFuncion(email, password);
+            user = userDao.getUserByEmailAndPassword(email, password);
             if (user != null) {
                 return user.getId();
             } else {
