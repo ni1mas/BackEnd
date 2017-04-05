@@ -20,20 +20,19 @@ import java.util.List;
 public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public boolean login(@RequestParam("email") String email, @RequestParam("pass") String password,
+    public String login(@RequestParam("email") String email, @RequestParam("pass") String password,
                          ModelMap model) {
-        List<User> list;
+        User user;
         try {
-            list = userDao.miFuncion(email, password);
-            System.out.print(list);
-            if(list.size()>0){
-                return new Boolean(true);
+            user = userDao.miFuncion(email, password);
+            if(user != null){
+                return user.getId();
             }else{
                 throw new Exception();
             }
         }
         catch (Exception ex) {
-            return new Boolean(false);
+            return "Error 404: User not found";
         }
     }
 

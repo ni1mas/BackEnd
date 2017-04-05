@@ -4,7 +4,12 @@ import org.springframework.web.bind.annotation.Mapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.Random;
 
 
 /**
@@ -15,6 +20,7 @@ import java.util.Set;
 public class User {
 
     public User(String dni, String name, String fname, int phone, int phone2, String email, String address, String password){
+        this.id = generateHashedId();
         this.DNI=dni;
         this.name=name;
         this.fname=fname;
@@ -28,9 +34,17 @@ public class User {
     public User(){
 
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     @Column(unique=true)
     private String DNI;
     @NotNull
@@ -109,5 +123,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String generateHashedId(){
+        long random = new Random().nextLong();
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.putLong(random);
+        String hashed = java.util.Base64.getEncoder().encodeToString(DigestUtils.sha512(buffer.array()));
+        return hashed;
     }
 }
