@@ -25,9 +25,9 @@ public class UserController {
         User user;
         try {
             user = userDao.miFuncion(email, password);
-            if(user != null){
+            if (user != null) {
                 return user.getId();
-            }else{
+            } else {
                 throw new Exception();
             }
         }

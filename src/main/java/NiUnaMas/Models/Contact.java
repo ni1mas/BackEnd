@@ -16,7 +16,7 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String DNI;
+    private String dni;
     @NotNull
     private String name;
     @NotNull
@@ -41,11 +41,11 @@ public class Contact {
     }
 
     public String getDNI() {
-        return DNI;
+        return dni;
     }
 
-    public void setDNI(String DNI) {
-        this.DNI = DNI;
+    public void setDNI(String dni) {
+        this.dni = dni;
     }
 
     public String getName() {
@@ -103,6 +103,7 @@ public class Contact {
     public void setPriority(int priority) {
         this.priority = priority;
     }
+
     public User getUser() {
         return user;
     }
