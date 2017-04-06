@@ -33,7 +33,7 @@ public class NotificationController {
      * @return A string describing if the notification is succesfully created or not.
      */
 
-    @RequestMapping(value = "/sendNotification", method = RequestMethod.GET)
+    @RequestMapping(value = "/sendNotification", method = RequestMethod.POST)
     public String create(@PathVariable String id, @RequestParam("type")int type, @RequestParam("coordX")double coordX, @RequestParam("coordY") double coordY) {
         Notification notification = null;
         try {

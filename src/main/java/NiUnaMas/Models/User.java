@@ -1,14 +1,10 @@
 package NiUnaMas.Models;
 
-import org.springframework.web.bind.annotation.Mapping;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.Random;
 
 
@@ -19,33 +15,21 @@ import java.util.Random;
 @Table(name = "User")
 public class User {
 
-    public User(String dni, String name, String fname, int phone, int phone2, String email, String address, String password){
-        this.id = generateHashedId();
-        this.DNI=dni;
-        this.name=name;
-        this.fname=fname;
-        this.phone=phone;
-        this.phone2=phone2;
-        this.email=email;
-        this.address=address;
-        this.password=password;
-    }
-
-    public User(){
-
-    }
-
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @NotNull
     @Column(unique=true)
-    private String DNI;
+    private String dni;
     @NotNull
     private String name;
     @NotNull
     private String fname;
+    @NotNull
     @Column(unique=true)
     private int phone;
     private int phone2;
+    @NotNull
     @Column(unique=true)
     private String email;
     @NotNull
@@ -53,8 +37,12 @@ public class User {
     @NotNull
     private String password;
 
-    public void setDNI(String DNI) {
-        this.DNI = DNI;
+    public User(){
+
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public void setName(String name) {
@@ -85,8 +73,8 @@ public class User {
         this.password = password;
     }
 
-    public String getDNI() {
-        return DNI;
+    public String getDni() {
+        return dni;
     }
 
     public String getName() {
@@ -113,24 +101,9 @@ public class User {
         return address;
     }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() { return password; }
 
-    public String getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String generateHashedId(){
-        long random = new Random().nextLong();
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.putLong(random);
-        String hashed = java.util.Base64.getEncoder().encodeToString(DigestUtils.sha512(buffer.array()));
-        hashed = hashed.replaceAll("/", "p");
-        return hashed;
-    }
+    public void setId(int id) { this.id = id; }
 }

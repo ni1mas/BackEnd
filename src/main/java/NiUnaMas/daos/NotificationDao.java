@@ -24,11 +24,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 @Transactional
 public interface NotificationDao extends CrudRepository<Notification, Long> {
-
     Notification getByUser(User user);
-
-    @Modifying(clearAutomatically = true)
-    @Query(value = "update notification n set n.type = ?1 WHERE n.user_dni = ?2", nativeQuery = true)
-    int updateByIdMine(int type, String id);
-
 } // class NotificationDao

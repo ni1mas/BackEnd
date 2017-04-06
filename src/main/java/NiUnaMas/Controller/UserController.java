@@ -1,16 +1,17 @@
 package NiUnaMas.Controller;
 
+import NiUnaMas.Controller.Exceptions.InvalidCredentialsLoginException;
+import NiUnaMas.Controller.Exceptions.UserAlreadyExistException;
+import NiUnaMas.Models.SuccessfulAction;
 import NiUnaMas.Models.User;
 import NiUnaMas.Varios.Uris;
 import NiUnaMas.daos.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
 /**
  * Created by Robert on 04/04/2017.
@@ -19,35 +20,26 @@ import java.util.List;
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER)
 public class UserController {
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(@RequestParam("email") String email, @RequestParam("pass") String password,
-                         ModelMap model) {
-        User user;
-        try {
-            user = userDao.getUserByEmailAndPassword(email, password);
-            if (user != null) {
-                return user.getId();
-            } else {
-                throw new Exception();
-            }
-        }
-        catch (Exception ex) {
-            return "Error 404: User not found";
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessfulAction login(@RequestBody User user) {
+        user = userDao.getUserByEmailAndPassword(user.getEmail(),user.getPassword());
+        if(user == null){
+            throw new InvalidCredentialsLoginException("Invalid credentials: The email or the password doens't mach");
+        }else{
+            return new SuccessfulAction("200", "Logged successfully.");
         }
     }
 
-    @RequestMapping(value = "/create")
-    public User register(@RequestParam("dni") String dni, @RequestParam("name") String name, @RequestParam("fname") String fname, @RequestParam("phone") int phone,
-                         @RequestParam("phone2") int phone2, @RequestParam("email") String email, @RequestParam("address") String address,
-                         @RequestParam("password") String password) {
-        User user;
+    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessfulAction register(@RequestBody @Valid User user) {
         try {
-            user = userDao.save(new User(dni, name, fname, phone, phone2, email, address, password));
+            userDao.save(user);
+            return new SuccessfulAction("200", "User created successfully.");
+        }catch (Exception e){
+            throw new UserAlreadyExistException("Invalid user: DNI, phone or email already taken.");
         }
-        catch (Exception ex) {
-            return null;
-        }
-        return user;
+
+
     }
 
 
