@@ -37,8 +37,17 @@ public class User {
     @NotNull
     private String password;
 
-    public User(){
+    public User(){}
 
+    public User(String dni, String name, String fname, int phone, int phone2, String email, String address, String password){
+        this.dni = dni;
+        this.name = name;
+        this.fname = fname;
+        this.phone = phone;
+        this.phone2 = phone2;
+        this.email = email;
+        this.address = address;
+        this.password = password;
     }
 
     public void setDni(String dni) {

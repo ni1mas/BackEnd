@@ -10,6 +10,7 @@ package NiUnaMas.Controller;
     import NiUnaMas.Varios.Uris;
     import NiUnaMas.daos.UserDao;
     import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.MediaType;
     import org.springframework.web.bind.annotation.*;
 
 /**
@@ -33,7 +34,7 @@ public class NotificationController {
      * @return A string describing if the notification is succesfully created or not.
      */
 
-    @RequestMapping(value = "/sendNotification", method = RequestMethod.POST)
+    @RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public String create(@PathVariable String id, @RequestParam("type")int type, @RequestParam("coordX")double coordX, @RequestParam("coordY") double coordY) {
         Notification notification = null;
         try {
