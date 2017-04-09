@@ -9,6 +9,8 @@ import NiUnaMas.daos.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +25,9 @@ import java.util.List;
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER)
 public class UserController {
-
-
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction login(@RequestBody User user) {
         user = userDao.getUserByEmailAndPassword(user.getEmail(),user.getPassword());
-
         if(user == null){
             throw new InvalidCredentialsLoginException("Invalid credentials: The email or the password doens't mach");
         }else{
@@ -36,7 +35,6 @@ public class UserController {
         }
     }
 
-    @Secured("ADMIN")
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction register(@RequestBody User user) {
         try{
@@ -47,11 +45,7 @@ public class UserController {
         }catch (Exception e){
             throw new UserAlreadyExistException("Invalid user: DNI, phone or email already taken.");
         }
-
-
     }
-
-
     // ------------------------
     // PRIVATE FIELDS
     // ------------------------
