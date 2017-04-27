@@ -34,10 +34,14 @@ public class UserController {
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction register(@RequestBody User user) {
         try{
-            userDao.save(new User(user));
-            return new SuccessfulAction("200", "User created successfully.");
+            if(userDao.getUserByEmailAndPassword(user.getEmail(), user.getPassword())!=null){
+                throw new Exception("");
+            }else{
+                userDao.save(new User(user));
+                return new SuccessfulAction("200", "User created successfully.");
+            }
         }catch (Exception e){
-            throw new UserAlreadyExistException("Invalid user: DNI, phone or email already taken." + e.getMessage());
+            throw new UserAlreadyExistException("Invalid user: DNI, phone or email already taken.");
         }
     }
     // ------------------------
