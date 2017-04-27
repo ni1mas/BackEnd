@@ -35,7 +35,6 @@ public class SuccessfulAction {
     public List<Object> getResults() {
         return results;
     }
-
     public void setResults(List<Object> results) {
         this.results = results;
     }

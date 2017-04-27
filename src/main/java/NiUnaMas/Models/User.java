@@ -2,11 +2,8 @@ package NiUnaMas.Models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import org.apache.commons.codec.digest.DigestUtils;
-
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Random;
+import org.bouncycastle.jcajce.provider.digest.SHA3;
+import org.bouncycastle.util.encoders.Hex;
 
 
 /**
@@ -17,8 +14,7 @@ import java.util.Random;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
     @NotNull
     @Column(unique=true)
     private String dni;
@@ -49,7 +45,23 @@ public class User {
         this.email = email;
         this.address = address;
         this.password = password;
-        //this.roles = roles;
+        SHA3.DigestSHA3 sha = new SHA3.Digest512();
+        byte[] digest = sha.digest((dni+email+phone).getBytes());
+        this.id = Hex.toHexString(digest);
+    }
+
+    public User(User user){
+        this.dni = user.getDni();
+        this.name = user.name;
+        this.fname = user.fname;
+        this.phone = user.phone;
+        this.phone2 = user.phone2;
+        this.email = user.email;
+        this.address = user.address;
+        this.password = user.password;
+        SHA3.DigestSHA3 sha = new SHA3.Digest512();
+        byte[] digest = sha.digest((dni+email+phone).getBytes());
+        this.id = Hex.toHexString(digest);
     }
 
     public void setDni(String dni) {
@@ -114,7 +126,7 @@ public class User {
 
     public String getPassword() { return password; }
 
-    public int getId() { return id; }
+    public String getId() { return id; }
 
-    public void setId(int id) { this.id = id; }
+    public void setId(String id) { this.id = id; }
 }

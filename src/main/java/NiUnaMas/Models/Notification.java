@@ -18,7 +18,7 @@ public class Notification {
     // Private..
     /////
     @ManyToOne
-    @JoinColumn(name = "user_dni", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     // Notification's id
     @Id

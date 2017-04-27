@@ -5,6 +5,7 @@ import org.springframework.validation.Errors;
 /**
  * Created by Robert on 08/04/2017.
  */
+@SuppressWarnings("serial")
 public class InvalidTypeException extends RuntimeException{
     private Errors errors;
 

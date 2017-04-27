@@ -5,8 +5,10 @@ package NiUnaMas.Controller;
  */
 
 
+    import NiUnaMas.Controller.Exceptions.InvalidTypeException;
     import NiUnaMas.Models.Notification;
     import NiUnaMas.Daos.NotificationDao;
+    import NiUnaMas.Models.SuccessfulAction;
     import NiUnaMas.Varios.Uris;
     import NiUnaMas.Daos.UserDao;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -28,35 +30,38 @@ public class NotificationController {
 
     /**
      * /create  --> Create a new notification and save it in the database.
-     * @param type 1: Green, 2: Orange, 3: Red
-     * @param coordY Notification's email
-     * @param coordX Notification's name
      * @return A string describing if the notification is succesfully created or not.
      */
 
-    /*@RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String create(@PathVariable String id, @RequestBody Notification notification) {
-        Notification notification = null;
+    @RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessfulAction create(@PathVariable String id, @RequestBody Notification notification) {
         try {
-            if(type!=1&&type!=2&&type!=3){
+            if(notification.getType()!=1 && notification.getType()!= 2&& notification.getType()!=3){
                 throw new Exception("Invalid type.");
             }
-            if(type==1){
-                notification = notificationDao.getByUser(userDao.findById(id));
-                notification.setType(1);
-                notificationDao.save(notification);
+            if(notification.getType()==1){
+                Notification oldNotification = notificationDao.getByUser(userDao.findById(id));
+                if(oldNotification == null){
+                    throw new Exception("User not found.");
+                }
+                if(oldNotification.getType()!=2 && oldNotification.getType()!=3)
+                    throw new Exception("No notifications to cancel." + notification.getType());
+                else{
+
+                    oldNotification.setType(1);
+                    notificationDao.save(oldNotification);
+                }
             }else {
-                notification = new Notification(type, coordX, coordY);
+                notification = new Notification(notification.getType(), notification.getCoordX(), notification.getCoordY());
                 notification.setUser(userDao.findById(id));
                 notificationDao.save(notification);
             }
         }
         catch (Exception ex) {
-            return "Error creating the notification: " + ex.toString();
+            throw  new InvalidTypeException("Error creating the notification: " + ex.toString());
         }
-        return "Notification succesfully created! (id = " + notification.getId() + ")";
-    }*/
-
+        return new SuccessfulAction("200","Notification created successfully.");
+    }
     // ------------------------
     // PRIVATE FIELDS
     // ------------------------

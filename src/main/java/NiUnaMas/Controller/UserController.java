@@ -22,22 +22,22 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction login(@RequestBody User user) {
         user = userDao.getUserByEmailAndPassword(user.getEmail(),user.getPassword());
+        List<Object> list = new ArrayList<>();
+        list.add(user.getId());
         if(user == null){
             throw new InvalidCredentialsLoginException("Invalid credentials: The email or the password doens't mach");
         }else{
-            return new SuccessfulAction("200", "Logged successfully.");
+            return new SuccessfulAction("200", "Logged successfully.", list);
         }
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction register(@RequestBody User user) {
         try{
-            userDao.save(user);
-            List<Object> list = new ArrayList<>();
-            list.add(user);
+            userDao.save(new User(user));
             return new SuccessfulAction("200", "User created successfully.");
         }catch (Exception e){
-            throw new UserAlreadyExistException("Invalid user: DNI, phone or email already taken.");
+            throw new UserAlreadyExistException("Invalid user: DNI, phone or email already taken." + e.getMessage());
         }
     }
     // ------------------------

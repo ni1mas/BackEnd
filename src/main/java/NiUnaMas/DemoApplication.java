@@ -32,7 +32,6 @@ public class DemoApplication {
                         "Daimes","hasdi712n310fmasda43");
 				userDao.save(user);
 			}
-
 		};
 	}
 }
