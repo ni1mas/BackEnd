@@ -37,18 +37,10 @@ public class User {
     private String address;
     @NotNull
     private String password;
-    //@NotNull
-    @ManyToMany
-    @JoinTable(
-            name="AuthUsers",
-            joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="auth_id", referencedColumnName="id"))
-    private List<Authorization> roles;
-
     public User(){}
 
     public User(String dni, String name, String fname, int phone, int phone2, String email,
-                String address, String password, List<Authorization> roles){
+                String address, String password){
         this.dni = dni;
         this.name = name;
         this.fname = fname;
@@ -57,7 +49,7 @@ public class User {
         this.email = email;
         this.address = address;
         this.password = password;
-        this.roles = roles;
+        //this.roles = roles;
     }
 
     public void setDni(String dni) {
@@ -125,12 +117,4 @@ public class User {
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
-
-    public List<Authorization> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Authorization> roles) {
-        this.roles = roles;
-    }
 }

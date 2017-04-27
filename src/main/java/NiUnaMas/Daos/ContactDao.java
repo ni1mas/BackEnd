@@ -1,4 +1,4 @@
-package NiUnaMas.daos;
+package NiUnaMas.Daos;
 
 import NiUnaMas.Models.Contact;
 import org.springframework.data.repository.CrudRepository;

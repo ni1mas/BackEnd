@@ -5,17 +5,11 @@ import NiUnaMas.Controller.Exceptions.UserAlreadyExistException;
 import NiUnaMas.Models.SuccessfulAction;
 import NiUnaMas.Models.User;
 import NiUnaMas.Varios.Uris;
-import NiUnaMas.daos.UserDao;
+import NiUnaMas.Daos.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 

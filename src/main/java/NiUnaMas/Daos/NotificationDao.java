@@ -1,4 +1,4 @@
-package NiUnaMas.daos;
+package NiUnaMas.Daos;
 
 /**
  * Created by Robert on 03/04/2017.
@@ -9,8 +9,6 @@ import javax.transaction.Transactional;
 
 import NiUnaMas.Models.Notification;
 import NiUnaMas.Models.User;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**

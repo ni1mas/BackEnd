@@ -1,11 +1,9 @@
-package NiUnaMas.daos;
+package NiUnaMas.Daos;
 
 import NiUnaMas.Models.User;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
  * Created by Robert on 04/04/2017.

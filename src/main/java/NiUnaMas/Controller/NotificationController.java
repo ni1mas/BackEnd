@@ -6,9 +6,9 @@ package NiUnaMas.Controller;
 
 
     import NiUnaMas.Models.Notification;
-    import NiUnaMas.daos.NotificationDao;
+    import NiUnaMas.Daos.NotificationDao;
     import NiUnaMas.Varios.Uris;
-    import NiUnaMas.daos.UserDao;
+    import NiUnaMas.Daos.UserDao;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.MediaType;
     import org.springframework.web.bind.annotation.*;
@@ -34,8 +34,8 @@ public class NotificationController {
      * @return A string describing if the notification is succesfully created or not.
      */
 
-    @RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String create(@PathVariable String id, @RequestParam("type")int type, @RequestParam("coordX")double coordX, @RequestParam("coordY") double coordY) {
+    /*@RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String create(@PathVariable String id, @RequestBody Notification notification) {
         Notification notification = null;
         try {
             if(type!=1&&type!=2&&type!=3){
@@ -55,7 +55,7 @@ public class NotificationController {
             return "Error creating the notification: " + ex.toString();
         }
         return "Notification succesfully created! (id = " + notification.getId() + ")";
-    }
+    }*/
 
     // ------------------------
     // PRIVATE FIELDS
