@@ -21,7 +21,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-03T22:57:46.089Z")
 
 @Api(value = "users", description = "the users API")
-public interface UserApi {
+public interface UserApiDoc {
 
     @ApiOperation(value = "Allows to create new user.", notes = "Allows to create new users in the system. Will return an error if the DNI, email, or phones already exists in the data base.", response = SuccessfulAction.class, tags={ "User", })
     @ApiResponses(value = {

@@ -14,4 +14,6 @@ public class Uris {
     public static final String CONTACT = "/contact";
 
     public static final String NOTIFICATION = "/notifications";
+
+    public static final String POLL = "/polls";
 }

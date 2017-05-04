@@ -1,6 +1,6 @@
 package NiUnaMas.Controller;
 
-import NiUnaMas.Api.UserApi;
+import NiUnaMas.Api.UserApiDoc;
 import NiUnaMas.Controller.Exceptions.InvalidCredentialsLoginException;
 import NiUnaMas.Controller.Exceptions.UserAlreadyExistException;
 import NiUnaMas.Models.SuccessfulAction;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER)
-public class UserController implements UserApi{
+public class UserController implements UserApiDoc {
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction login(@ApiParam(value = "User that wants to login." ,required=true )@RequestBody User user) {
         user = userDao.getUserByEmailAndPassword(user.getEmail(),user.getPassword());

@@ -1,8 +1,11 @@
 package NiUnaMas.Models;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Robert on 04/05/2017.
@@ -17,6 +20,12 @@ public class Poll {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @CreatedDate
+    @Column(name = "CREATED", insertable = true, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+
     private ArrayList<String> answers;
 
     public Poll(){

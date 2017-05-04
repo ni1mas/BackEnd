@@ -3,9 +3,7 @@ package NiUnaMas.Controller;
 /**
  * Created by Robert on 03/04/2017.
  */
-
-
-    import NiUnaMas.Api.NotificationApi;
+    import NiUnaMas.Api.NotificationApiDoc;
     import NiUnaMas.Controller.Exceptions.InvalidTypeException;
     import NiUnaMas.Models.Notification;
     import NiUnaMas.Daos.NotificationDao;
@@ -24,16 +22,7 @@ package NiUnaMas.Controller;
  */
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.NOTIFICATION)
-public class NotificationController implements NotificationApi {
-
-    // ------------------------
-    // PUBLIC METHODS
-    // ------------------------
-
-    /**
-     * /create  --> Create a new notification and save it in the database.
-     * @return A string describing if the notification is succesfully created or not.
-     */
+public class NotificationController implements NotificationApiDoc {
 
     @RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction sendNotification(@ApiParam(value = "Notification sent." ,required=true )@RequestBody Notification notification, @PathVariable String id) {
