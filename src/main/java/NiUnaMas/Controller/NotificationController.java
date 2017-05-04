@@ -5,12 +5,14 @@ package NiUnaMas.Controller;
  */
 
 
+    import NiUnaMas.Api.NotificationApi;
     import NiUnaMas.Controller.Exceptions.InvalidTypeException;
     import NiUnaMas.Models.Notification;
     import NiUnaMas.Daos.NotificationDao;
     import NiUnaMas.Models.SuccessfulAction;
     import NiUnaMas.Varios.Uris;
     import NiUnaMas.Daos.UserDao;
+    import io.swagger.annotations.ApiParam;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.MediaType;
     import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,7 @@ package NiUnaMas.Controller;
  */
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.NOTIFICATION)
-public class NotificationController {
+public class NotificationController implements NotificationApi {
 
     // ------------------------
     // PUBLIC METHODS
@@ -34,7 +36,7 @@ public class NotificationController {
      */
 
     @RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SuccessfulAction create(@PathVariable String id, @RequestBody Notification notification) {
+    public SuccessfulAction sendNotification(@ApiParam(value = "Notification sent." ,required=true )@RequestBody Notification notification, @PathVariable String id) {
         try {
             if(notification.getType()!=1 && notification.getType()!= 2&& notification.getType()!=3){
                 throw new Exception("Invalid type.");
@@ -45,7 +47,7 @@ public class NotificationController {
                     throw new Exception("User not found.");
                 }
                 if(oldNotification.getType()!=2 && oldNotification.getType()!=3)
-                    throw new Exception("No notifications to cancel." + notification.getType());
+                    throw new Exception("No notifications to cancel.");
                 else{
 
                     oldNotification.setType(1);

@@ -24,7 +24,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ UserAlreadyExistException.class })
     protected ResponseEntity<Object> handleUserAlreadyExist(RuntimeException e, WebRequest request) {
         UserAlreadyExistException ire = (UserAlreadyExistException) e;
-        ApiError error = new ApiError("EntityAlreadyExists", ire.getMessage());
+        ApiError error = new ApiError("400", ire.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
@@ -33,7 +33,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ InvalidCredentialsLoginException.class })
     protected ResponseEntity<Object> handleInvalidCredentialsLoginException(RuntimeException e, WebRequest request) {
         InvalidCredentialsLoginException ire = (InvalidCredentialsLoginException) e;
-        ApiError error = new ApiError("UserDoesNotExist", ire.getMessage());
+        ApiError error = new ApiError("400", ire.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
+    @ExceptionHandler({ InvalidTypeException.class })
+    protected ResponseEntity<Object> handleInvalidTypeException(RuntimeException e, WebRequest request) {
+        InvalidTypeException ire = (InvalidTypeException) e;
+        ApiError error = new ApiError("400", ire.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);

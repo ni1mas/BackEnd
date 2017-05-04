@@ -80,8 +80,8 @@ public class Notification {
         return coordX;
     }
 
-    public void setCoordX(double coordY) {
-        this.coordY = coordX;
+    public void setCoordX(double coordX) {
+        this.coordX = coordX;
     }
 
     public double getCoordY() {
