@@ -8,12 +8,16 @@ package NiUnaMas.Controller;
     import NiUnaMas.Models.Notification;
     import NiUnaMas.Daos.NotificationDao;
     import NiUnaMas.Models.SuccessfulAction;
+    import NiUnaMas.Models.User;
     import NiUnaMas.Varios.Uris;
     import NiUnaMas.Daos.UserDao;
     import io.swagger.annotations.ApiParam;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.MediaType;
     import org.springframework.web.bind.annotation.*;
+
+    import NiUnaMas.Varios.SyncPipe;
+    import java.io.PrintWriter;
 
 /**
  * A class to test interactions with the MySQL database using the NotificationDao class.
@@ -25,27 +29,44 @@ package NiUnaMas.Controller;
 public class NotificationController implements NotificationApiDoc {
 
     @RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SuccessfulAction sendNotification(@ApiParam(value = "Notification sent." ,required=true )@RequestBody Notification notification, @PathVariable String id) {
+    public SuccessfulAction sendNotification(@ApiParam(value = "Notification sent." ,required=true )@RequestBody Notification notification,
+                                             @PathVariable String id) {
         try {
+            /*String[] command =
+                    {
+                            "cmd",
+                    };
+            Process p = Runtime.getRuntime().exec(command);
+            new Thread(new SyncPipe(p.getErrorStream(), System.err)).start();
+            new Thread(new SyncPipe(p.getInputStream(), System.out)).start();
+            PrintWriter stdin = new PrintWriter(p.getOutputStream());
+            stdin.println("dir c:\\ /A /Q");
+            stdin.close();*/
             if(notification.getType()!=1 && notification.getType()!= 2&& notification.getType()!=3){
                 throw new Exception("Invalid type.");
             }
+            User user = userDao.findById(id);
+            if(user == null){
+                throw new Exception("User not found.");
+            }
+            Notification oldNotification = notificationDao.getByUser(user);
             if(notification.getType()==1){
-                Notification oldNotification = notificationDao.getByUser(userDao.findById(id));
-                if(oldNotification == null){
-                    throw new Exception("User not found.");
-                }
-                if(oldNotification.getType()!=2 && oldNotification.getType()!=3)
+                if(oldNotification == null || (oldNotification.getType()!=2 && oldNotification.getType()!=3)){
                     throw new Exception("No notifications to cancel.");
-                else{
-
+                }else{
                     oldNotification.setType(1);
                     notificationDao.save(oldNotification);
                 }
-            }else {
-                notification = new Notification(notification.getType(), notification.getCoordX(), notification.getCoordY());
-                notification.setUser(userDao.findById(id));
-                notificationDao.save(notification);
+            }else{
+                if(oldNotification == null) {
+                    notification = new Notification(notification.getType(), notification.getCoordX(), notification.getCoordY());
+                    notification.setUser(userDao.findById(id));
+                    notificationDao.save(notification);
+                }else
+                    if((oldNotification.getType()==2 && notification.getType()==3)){
+                        oldNotification.setType(3);
+                        notificationDao.save(oldNotification);
+                    }
             }
         }
         catch (Exception ex) {

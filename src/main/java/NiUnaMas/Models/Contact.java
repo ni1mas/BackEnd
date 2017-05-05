@@ -1,36 +1,47 @@
 package NiUnaMas.Models;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by Robert on 05/04/2017.
  */
 @Entity
 @Table(name = "Contact")
+@ApiModel(value = "Contact model", description = "Complete data of a model Contact")
 public class Contact {
 
-    @ManyToOne
-    @JoinColumn(name = "user_dni")
-    private User user;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(value = "Id of the contact", required = false, hidden = true)
     private int id;
+    @NotNull
     private String dni;
     @NotNull
+    @ApiModelProperty(value = "The dni of the contact", required = true, example = "Pepe")
     private String name;
     @NotNull
+    @ApiModelProperty(value = "The dni of the contact", required = true, example = "Severo")
     private String fname;
     @NotNull
+    @ApiModelProperty(value = "The dni of the contact", required = true, example = "668957423")
     private int phone;
+    @ApiModelProperty(value = "The dni of the contact", required = true, example = "pepe@severo.com")
+    @NotNull
     private String email;
     @NotNull
+    @ApiModelProperty(value = "The dni of the contact", required = true, example = "Calle falsa 123")
     private String address;
     @NotNull
-    private String relation;
-    @NotNull
+    @ApiModelProperty(value = "The dni of the contact", required = true, example = "1")
     private int priority;
-
+    @OneToMany(mappedBy = "user_dni")
+    @ApiModelProperty(value = "Users that this Contact belong.", required = false, hidden = true)
+    private List<UserContact> userAssoc;
 
     public int getId() {
         return id;
@@ -40,11 +51,11 @@ public class Contact {
         this.id = id;
     }
 
-    public String getDNI() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDNI(String dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
@@ -88,14 +99,6 @@ public class Contact {
         this.address = address;
     }
 
-    public String getRelation() {
-        return relation;
-    }
-
-    public void setRelation(String relation) {
-        this.relation = relation;
-    }
-
     public int getPriority() {
         return priority;
     }
@@ -104,11 +107,11 @@ public class Contact {
         this.priority = priority;
     }
 
-    public User getUser() {
-        return user;
+    public List<UserContact> getUserAssoc() {
+        return userAssoc;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserAssoc(List<UserContact> userAssoc) {
+        this.userAssoc = userAssoc;
     }
 }

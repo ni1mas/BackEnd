@@ -16,6 +16,15 @@ public class UserWeb {
 
     @Id
     private String dni;
+    private String name;
+    private String fname;
+    @Column(unique=true)
+    private String email;
+    @Min(0)
+    @Max(3)
+    private int puesto;
+    @Size(min=6)
+    private String pass;
 
     public String getDni() {
         return dni;
@@ -64,14 +73,4 @@ public class UserWeb {
     public void setPass(String pass) {
         this.pass = pass;
     }
-
-    private String name;
-    private String fname;
-    @Column(unique=true)
-    private String email;
-    @Min(0)
-    @Max(3)
-    private int puesto;
-    @Size(min=6)
-    private String pass;
 }

@@ -4,6 +4,9 @@ package NiUnaMas.Models;
  * Created by Robert on 03/04/2017.
  */
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -13,37 +16,35 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Notification")
+@ApiModel(value = "Notification model", description = "Complete data of a model Notification")
 public class Notification {
     /////
     // Private..
     /////
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user", nullable = false)
+    @ApiModelProperty(value = "The id of the user", required = false, hidden = true)
     private User user;
     // Notification's id
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(value = "The id of the user", required = false, hidden = true)
     private int id;
-
-    // Notification's date
-    /*@NotNull
-    private Timestamp date;*/
 
     // Notification's type
     @NotNull
+    @ApiModelProperty(value = "The dni of the user", required = true, example = "2")
     private int type;
 
     // Notification's Coordinate X
     @NotNull
+    @ApiModelProperty(value = "The dni of the user", required = true, example = "54.2513326")
     private double coordX;
 
     // Notification's Coordinate Y
     @NotNull
+    @ApiModelProperty(value = "The dni of the user", required = true, example = "3.5416541")
     private double coordY;
-
-    // Notification's State
-    /*@NotNull
-    private int state;*/
 
     /////
     // Public...

@@ -2,8 +2,13 @@ package NiUnaMas.Models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
+
+import java.util.List;
 
 
 /**
@@ -11,28 +16,43 @@ import org.bouncycastle.util.encoders.Hex;
  */
 @Entity
 @Table(name = "User")
+@ApiModel(value = "User model", description = "Complete data of a model User")
 public class User {
 
-    @Id
+
+    @ApiModelProperty(value = "The id of the user", required = false, hidden = true)
     private String id;
     @NotNull
+    @Id
     @Column(unique=true)
+    @ApiModelProperty(value = "The dni of the user", required = true, example = "74389280K")
     private String dni;
     @NotNull
+    @ApiModelProperty(value = "The name of the user", required = true, example = "Eduardo")
     private String name;
     @NotNull
+    @ApiModelProperty(value = "The fname of the user", required = true, example = "Manos Tijeras")
     private String fname;
     @NotNull
     @Column(unique=true)
+    @ApiModelProperty(value = "The phone of the user", required = true, example = "669754255")
     private int phone;
+    @ApiModelProperty(value = "The phone2 of the user", required = true, example = "616600758")
     private int phone2;
     @NotNull
     @Column(unique=true)
+    @ApiModelProperty(value = "The email of the user", required = true, example = "example@email.com")
     private String email;
     @NotNull
+    @ApiModelProperty(value = "The address of the user", required = true, example = "Nowhere Street")
     private String address;
     @NotNull
+    @ApiModelProperty(value = "The password of the user", required = true, example = "SecretPass")
     private String password;
+    @OneToMany(mappedBy = "contact_id")
+    @ApiModelProperty(value = "The id of the user", required = false, hidden = true)
+    private List<UserContact> contactAssoc;
+
     public User(){}
 
     public User(String dni, String name, String fname, int phone, int phone2, String email,
@@ -129,4 +149,12 @@ public class User {
     public String getId() { return id; }
 
     public void setId(String id) { this.id = id; }
+
+    public List<UserContact> getContactAssoc() {
+        return contactAssoc;
+    }
+
+    public void setContactAssoc(List<UserContact> contactAssoc) {
+        this.contactAssoc = contactAssoc;
+    }
 }
