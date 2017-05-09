@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,11 +47,27 @@ public class ContactController implements ContactApiDoc{
     public SuccessfulAction removeContact(@ApiParam(value = "Contact that the user wants to delete." ,required=true )
                                              @RequestBody Contact contact, @PathVariable String id) {
         try{
-            if(userDao.findById(id)==null)
+            User user = userDao.findById(id);
+            if(user==null)
                 throw new UserDoesNotExistException("");
             else{
                 contactDao.delete(contact);
                 return new SuccessfulAction("200", "Contact deleted succesfully.");
+            }
+        }catch(UserDoesNotExistException e){
+            throw new UserDoesNotExistException("The user does not exists");
+        }
+    }
+    @RequestMapping(value = "/getContacts", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessfulAction getContacts(@ApiParam(value = "Returns all the contacts the user has." ,required=true )
+                                          @RequestBody Contact contact, @PathVariable String id) {
+        try{
+            User user = userDao.findById(id);
+            if(user==null)
+                throw new UserDoesNotExistException("");
+            else{
+                List <Object> list = (List)userContactDao.findAll();
+                return new SuccessfulAction("200", "Contact deleted succesfully.", list);
             }
         }catch(UserDoesNotExistException e){
             throw new UserDoesNotExistException("The user does not exists");

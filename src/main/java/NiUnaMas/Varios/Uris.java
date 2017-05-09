@@ -15,5 +15,6 @@ public class Uris {
 
     public static final String NOTIFICATION = "/notifications";
 
-    public static final String POLL = "/polls";
+    public static final String RESPONSE = "/response";
+
 }

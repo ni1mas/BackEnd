@@ -29,7 +29,7 @@ public class UserController implements UserApiDoc {
             List<Object> list = new ArrayList<>();
             list.add(user.getId());
             if (user == null) {
-                throw new Exception("");
+                throw new Exception();
             } else {
                 return new SuccessfulAction("200", "Logged successfully.", list);
             }

@@ -50,7 +50,7 @@ public class NotificationController implements NotificationApiDoc {
                 throw new Exception("User not found.");
             }
             Notification oldNotification = notificationDao.getByUser(user);
-            if(notification.getType()==1){
+            if(notification.getType() == 1){
                 if(oldNotification == null || (oldNotification.getType()!=2 && oldNotification.getType()!=3)){
                     throw new Exception("No notifications to cancel.");
                 }else{
@@ -63,7 +63,7 @@ public class NotificationController implements NotificationApiDoc {
                     notification.setUser(userDao.findById(id));
                     notificationDao.save(notification);
                 }else
-                    if((oldNotification.getType()==2 && notification.getType()==3)){
+                    if((oldNotification.getType() == 2 && notification.getType() == 3)){
                         oldNotification.setType(3);
                         notificationDao.save(oldNotification);
                     }
