@@ -4,6 +4,7 @@ import NiUnaMas.Controller.Exceptions.InvalidCredentialsLoginException;
 import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
 import NiUnaMas.Daos.ResponseDao;
 import NiUnaMas.Daos.ToContactDAO;
+import NiUnaMas.Models.Response;
 import NiUnaMas.Models.ResponseToContactDTO;
 import NiUnaMas.Models.SuccessfulAction;
 import NiUnaMas.Models.ToContact;
@@ -27,20 +28,20 @@ import java.util.List;
 public class ResponseController {
     @RequestMapping(value = "/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction sendResponse(@ApiParam(value = "New quiz done." ,required=true )@RequestBody ResponseToContactDTO dto) {
-        ToContact toContact;
+        ToContact toContact = dto.getTc();
         try {
             if(dto.getTc() == null){
-                responseDao.save(dto.getResp());
+                responseDao.save(new Response(dto.getResp()));
             }else{
                 toContact = toContactDAO.findOne(dto.getTc().getPhone());
                 if(toContact == null){
-                    toContactDAO.save(dto.getTc());
-                    responseDao.save(dto.getResp());
+                    toContactDAO.save(new ToContact(dto.getTc()));
                 }
+                responseDao.save(new Response(dto.getResp()));
             }
             return new SuccessfulAction("200", "Response sent successfuly.");
         }catch(Exception e){
-            throw new UserDoesNotExistException("Error");
+            throw new UserDoesNotExistException(e.toString());
         }
     }
 

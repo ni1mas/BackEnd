@@ -15,30 +15,45 @@ import javax.persistence.*;
 public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @ApiModelProperty(value ="", hidden = true, example = "")
+    @ApiModelProperty(value ="The id of the reponse.", hidden = true)
     private int id;
     @ApiModelProperty(value = "Sex of the responser.", required = true, example = "74389280K")
     private boolean sex;
-    @ApiModelProperty(value = "1º answer", required = true, example = "Sí")
+    @ApiModelProperty(value = "1º answer", required = true, example = "2")
     private int p1;
-    @ApiModelProperty(value = "2º answer", required = true, example = "No")
+    @ApiModelProperty(value = "2º answer", required = true, example = "0")
     private int p2;
-    @ApiModelProperty(value = "3º answer", required = true, example = "A veces")
+    @ApiModelProperty(value = "3º answer", required = true, example = "1")
     private int p3;
-    @ApiModelProperty(value = "4º answer", required = true, example = "Sí")
+    @ApiModelProperty(value = "4º answer", required = true, example = "2")
     private int p4;
-    @ApiModelProperty(value = "5º answer", required = true, example = "Sí")
+    @ApiModelProperty(value = "5º answer", required = true, example = "2")
     private int p5;
-    @ApiModelProperty(value = "6º answer", required = true, example = "Sí")
+    @ApiModelProperty(value = "6º answer", required = true, example = "2")
     private int p6;
-    @ApiModelProperty(value = "7º answer", required = true, example = "No")
+    @ApiModelProperty(value = "7º answer", required = true, example = "0")
     private int p7;
-    @ApiModelProperty(value = "8º answer", required = true, example = "No")
+    @ApiModelProperty(value = "8º answer", required = true, example = "0")
     private int p8;
-    @ApiModelProperty(value = "9º answer", required = true, example = "Sí")
+    @ApiModelProperty(value = "9º answer", required = true, example = "2")
     private int p9;
-    @ApiModelProperty(value = "10º answer", required = true, example = "A veces")
+    @ApiModelProperty(value = "10º answer", required = true, example = "1")
     private int p10;
+
+    public Response(){ }
+    public Response(Response resp){
+        this.p1 = resp.getP1();
+        this.p2 = resp.getP2();
+        this.p3 = resp.getP3();
+        this.p4 = resp.getP4();
+        this.p5 = resp.getP5();
+        this.p6 = resp.getP6();
+        this.p7 = resp.getP7();
+        this.p8 = resp.getP8();
+        this.p9 = resp.getP9();
+        this.p10 = resp.getP10();
+        this.sex = resp.isSex();
+    }
 
     public int getId() {
         return id;
@@ -56,9 +71,8 @@ public class Response {
         this.sex = sex;
     }
 
-    public int getP1() {
-        return p1;
-    }
+
+    public int getP1() { return p1; }
 
     public void setP1(int p1) {
         this.p1 = p1;

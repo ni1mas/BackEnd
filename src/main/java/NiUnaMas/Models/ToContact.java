@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * Created by Robert on 09/05/2017.
  */
 @Entity
-@Table(name = "Response")
+@Table(name = "ToContact")
 @ApiModel(value = "ToContact model", description = "Complete data of a model ToContact")
 public class ToContact {
     @Id
@@ -20,9 +20,13 @@ public class ToContact {
     @ApiModelProperty(value = "The name of the person that did the quiz", required = true, example = "Andrea")
     public String name;
 
-    public int getPhone() {
-        return phone;
+    public ToContact(){}
+    public ToContact(ToContact tc){
+        this.name = tc.getName();
+        this.phone = tc.getPhone();
     }
+
+    public int getPhone() { return phone; }
 
     public void setPhone(int phone) {
         this.phone = phone;
