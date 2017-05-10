@@ -8,4 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ContactDao extends CrudRepository<Contact, Long> {
     Contact findByEmail(String email);
+    Contact findById(int id);
 }

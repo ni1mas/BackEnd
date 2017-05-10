@@ -58,16 +58,20 @@ public class ContactController implements ContactApiDoc{
             throw new UserDoesNotExistException("The user does not exists");
         }
     }
-    @RequestMapping(value = "/getContacts", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SuccessfulAction getContacts(@ApiParam(value = "Returns all the contacts the user has." ,required=true )
-                                          @RequestBody Contact contact, @PathVariable String id) {
+    @RequestMapping(value = "/getContacts", method = RequestMethod.GET)
+    public SuccessfulAction getContacts(@PathVariable String id) {
         try{
             User user = userDao.findById(id);
             if(user==null)
                 throw new UserDoesNotExistException("");
             else{
-                List <Object> list = (List)userContactDao.findAll();
-                return new SuccessfulAction("200", "Contact deleted succesfully.", list);
+                List <UserContact> list = (List)userContactDao.findAll();
+                List <Object> listreturn = new ArrayList<>();
+                for(int i=0; i < list.size();i++){
+                    if(list.get(i).getUser() == user)
+                        listreturn.add(new UserContact(null, list.get(i).getContact_id(), list.get(i).getRelation()));
+                }
+                return new SuccessfulAction("200", "Data retrivied successfuly.", listreturn);
             }
         }catch(UserDoesNotExistException e){
             throw new UserDoesNotExistException("The user does not exists");

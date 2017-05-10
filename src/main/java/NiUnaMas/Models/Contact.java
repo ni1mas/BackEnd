@@ -43,6 +43,18 @@ public class Contact {
     @ApiModelProperty(value = "Users that this Contact belong.", required = false, hidden = true)
     private List<UserContact> userAssoc;
 
+    public Contact (){}
+
+    public Contact(Contact c) {
+        this.dni = c.dni;
+        this.name = c.name;
+        this.fname = c.fname;
+        this.phone = c.phone;
+        this.email = c.email;
+        this.address = c.address;
+        this.priority = c.priority;
+    }
+
     public int getId() {
         return id;
     }

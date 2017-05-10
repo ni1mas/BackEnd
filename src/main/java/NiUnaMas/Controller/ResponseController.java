@@ -1,5 +1,6 @@
 package NiUnaMas.Controller;
 
+import NiUnaMas.Api.ResponseApiDoc;
 import NiUnaMas.Controller.Exceptions.InvalidCredentialsLoginException;
 import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
 import NiUnaMas.Daos.ResponseDao;
@@ -25,15 +26,15 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.RESPONSE)
-public class ResponseController {
+public class ResponseController implements ResponseApiDoc{
     @RequestMapping(value = "/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SuccessfulAction sendResponse(@ApiParam(value = "New quiz done." ,required=true )@RequestBody ResponseToContactDTO dto) {
+    public SuccessfulAction sendResponse(@RequestBody ResponseToContactDTO dto) {
         ToContact toContact = dto.getTc();
         try {
             if(dto.getTc() == null){
                 responseDao.save(new Response(dto.getResp()));
             }else{
-                toContact = toContactDAO.findOne(dto.getTc().getPhone());
+                toContact = toContactDAO.findByPhone(dto.getTc().getPhone());
                 if(toContact == null){
                     toContactDAO.save(new ToContact(dto.getTc()));
                 }

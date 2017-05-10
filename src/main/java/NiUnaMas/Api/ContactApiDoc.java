@@ -34,4 +34,13 @@ public interface ContactApiDoc {
             method = RequestMethod.POST)
     SuccessfulAction removeContact(@ApiParam(value = "Contact to delete." ,required=true ) @RequestBody Contact contact,
                                 @ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
+
+    @ApiOperation(value = "Allows to get all the contacts from one user", notes = "The getContacts endpoint allow the user to get his contacts",
+            response = SuccessfulAction.class, tags={ "Contact", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "The user does not exists.", response = SuccessfulAction.class)})
+    @RequestMapping(value = "/users/{id}/contact/getContacts",
+            produces = { "application/json" },
+            method = RequestMethod.POST)
+    SuccessfulAction getContacts(@ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
 }
