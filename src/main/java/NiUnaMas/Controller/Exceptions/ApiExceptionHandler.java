@@ -21,6 +21,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler({ ContactAlreadyExists.class })
+    protected ResponseEntity<Object> handleContactAlreadyExists(RuntimeException e, WebRequest request) {
+        ContactAlreadyExists ire = (ContactAlreadyExists) e;
+        ApiError error = new ApiError("400", ire.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
+
     @ExceptionHandler({ UserAlreadyExistException.class })
     protected ResponseEntity<Object> handleUserAlreadyExist(RuntimeException e, WebRequest request) {
         UserAlreadyExistException ire = (UserAlreadyExistException) e;

@@ -17,4 +17,6 @@ public class Uris {
 
     public static final String RESPONSE = "/response";
 
+    public static final String KEEPALIVE = "/keepalive";
+
 }

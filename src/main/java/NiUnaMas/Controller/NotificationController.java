@@ -18,6 +18,9 @@ package NiUnaMas.Controller;
 
     import NiUnaMas.Varios.SyncPipe;
     import java.io.PrintWriter;
+    import java.util.ArrayList;
+    import java.util.Date;
+    import java.util.List;
 
 /**
  * A class to test interactions with the MySQL database using the NotificationDao class.
@@ -32,16 +35,6 @@ public class NotificationController implements NotificationApiDoc {
     public SuccessfulAction sendNotification(@ApiParam(value = "Notification sent." ,required=true )@RequestBody Notification notification,
                                              @PathVariable String id) {
         try {
-            /*String[] command =
-                    {
-                            "cmd",
-                    };
-            Process p = Runtime.getRuntime().exec(command);
-            new Thread(new SyncPipe(p.getErrorStream(), System.err)).start();
-            new Thread(new SyncPipe(p.getInputStream(), System.out)).start();
-            PrintWriter stdin = new PrintWriter(p.getOutputStream());
-            stdin.println("dir c:\\ /A /Q");
-            stdin.close();*/
             if(notification.getType()!=1 && notification.getType()!= 2&& notification.getType()!=3){
                 throw new Exception("Invalid type.");
             }
@@ -59,7 +52,7 @@ public class NotificationController implements NotificationApiDoc {
                 }
             }else{
                 if(oldNotification == null) {
-                    notification = new Notification(notification.getType(), notification.getCoordX(), notification.getCoordY());
+                    notification = new Notification(notification.getType(), notification.getCoordX(), notification.getCoordY(), notification.getDate());
                     notification.setUser(userDao.findById(id));
                     notificationDao.save(notification);
                 }else

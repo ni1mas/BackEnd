@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * @author robert
@@ -46,6 +47,9 @@ public class Notification {
     @ApiModelProperty(value = "The dni of the user", required = true, example = "3.5416541")
     private double coordY;
 
+    @NotNull
+    @ApiModelProperty(value = "The date when the notification was sent", required = true, example = "2017-05-11T14:52:36.251Z")
+    private Date date;
     /////
     // Public...
     /////
@@ -55,10 +59,11 @@ public class Notification {
         this.id = id;
     }
 
-    public Notification(int type, double coordX, double coordY){
+    public Notification(int type, double coordX, double coordY, Date date){
         this.type = type;
         this.coordX = coordX;
         this.coordY = coordY;
+        this.date = date;
     }
 
     // Getter and setter methods
@@ -101,4 +106,7 @@ public class Notification {
         this.user = user;
     }
 
+    public Date getDate() { return date; }
+
+    public void setDate(Date date) { this.date = date; }
 } // class Notification

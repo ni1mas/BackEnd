@@ -36,6 +36,13 @@ public class UserContact implements Serializable{
         this.relation = relation;
     }
 
+    public UserContact (UserContactPK ucPK, User u, Contact c, String relation){
+        this.id = ucPK;
+        this.user_dni = u;
+        this.contact_id = c;
+        this.relation = relation;
+    }
+
     public UserContactPK getId() {
         return id;
     }

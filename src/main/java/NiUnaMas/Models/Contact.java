@@ -20,6 +20,7 @@ public class Contact {
     @ApiModelProperty(value = "Id of the contact", required = false, hidden = true)
     private int id;
     @NotNull
+    @Column(unique=true)
     private String dni;
     @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "Pepe")
@@ -29,9 +30,11 @@ public class Contact {
     private String fname;
     @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "668957423")
+    @Column(unique=true)
     private int phone;
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "pepe@severo.com")
     @NotNull
+    @Column(unique=true)
     private String email;
     @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "Calle falsa 123")

@@ -16,6 +16,12 @@ public class UserContactPK implements Serializable {
     @Column(name = "CONTACT_ID")
     private int contact_id;
 
+    public UserContactPK(){}
+
+    public UserContactPK(String user, int contact_id){
+        this.user_dni = user;
+        this.contact_id = contact_id;
+    }
     public String getUser_dni() {
         return user_dni;
     }
