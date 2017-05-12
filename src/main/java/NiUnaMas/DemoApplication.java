@@ -24,7 +24,7 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	CommandLineRunner init(final UserDao userDao) {
 
 		return new CommandLineRunner() {
@@ -37,7 +37,7 @@ public class DemoApplication {
 				userDao.save(user);
 			}
 		};
-	}
+	}*/
 }
 
 
