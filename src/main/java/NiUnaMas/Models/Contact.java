@@ -42,6 +42,8 @@ public class Contact {
     @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "1")
     private int priority;
+    /*private String activationCode;
+    private boolean active;*/
     @OneToMany(mappedBy = "user_dni")
     @ApiModelProperty(value = "Users that this Contact belong.", required = false, hidden = true)
     private List<UserContact> userAssoc;

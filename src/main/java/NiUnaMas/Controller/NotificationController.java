@@ -5,10 +5,12 @@ package NiUnaMas.Controller;
  */
     import NiUnaMas.Api.NotificationApiDoc;
     import NiUnaMas.Controller.Exceptions.InvalidTypeException;
+    import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
     import NiUnaMas.Models.Notification;
     import NiUnaMas.Daos.NotificationDao;
     import NiUnaMas.Models.SuccessfulAction;
     import NiUnaMas.Models.User;
+    import NiUnaMas.Models.UserContact;
     import NiUnaMas.Varios.Uris;
     import NiUnaMas.Daos.UserDao;
     import io.swagger.annotations.ApiParam;
@@ -66,6 +68,22 @@ public class NotificationController implements NotificationApiDoc {
             throw  new InvalidTypeException("Error creating the notification: " + ex.toString());
         }
         return new SuccessfulAction("200","Notification created successfully.");
+    }
+
+    @RequestMapping(value = "/getNotification", method = RequestMethod.GET)
+    public SuccessfulAction getNotification(@PathVariable String id) {
+        try {
+            User user = userDao.findById(id);
+            if(user==null)
+                throw new UserDoesNotExistException("");
+            else {
+                List <Object> list = (List)notificationDao.findByUser(user);
+                return new SuccessfulAction("200", "Data sent successfully.", list);
+            }
+
+        }catch(UserDoesNotExistException e){
+            throw new UserDoesNotExistException("The user does not exists");
+        }
     }
     // ------------------------
     // PRIVATE FIELDS

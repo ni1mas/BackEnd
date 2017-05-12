@@ -19,4 +19,6 @@ public class Uris {
 
     public static final String KEEPALIVE = "/keepalive";
 
+    public static final String AUDIO = "/file";
+
 }

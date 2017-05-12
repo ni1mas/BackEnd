@@ -36,9 +36,10 @@ public class ResponseController implements ResponseApiDoc{
             }else{
                 toContact = toContactDAO.findByPhone(dto.getTc().getPhone());
                 if(toContact == null){
-                    toContactDAO.save(new ToContact(dto.getTc()));
+                    ToContact tc = dto.getTc();
+                    tc.setResponse(responseDao.save(new Response(dto.getResp())));
+                    toContactDAO.save(tc);
                 }
-                responseDao.save(new Response(dto.getResp()));
             }
             return new SuccessfulAction("200", "Response sent successfuly.");
         }catch(Exception e){

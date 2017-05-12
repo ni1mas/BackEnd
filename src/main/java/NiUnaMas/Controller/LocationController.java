@@ -1,5 +1,6 @@
 package NiUnaMas.Controller;
 
+import NiUnaMas.Api.LocationApiDoc;
 import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
 import NiUnaMas.Daos.LocationDao;
 import NiUnaMas.Daos.UserDao;
@@ -16,10 +17,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.KEEPALIVE)
-public class LocationController {
+public class LocationController implements LocationApiDoc{
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
-    public SuccessfulAction sendKeepAlive(@PathVariable String id, @RequestBody Location location) {
+    public SuccessfulAction sendKeepAlive( @RequestBody Location location, @PathVariable String id) {
         try{
             User user = userDao.findById(id);
             if(user==null)
@@ -31,7 +32,7 @@ public class LocationController {
                 return new SuccessfulAction("200", "Sent successfuly.");
             }
         }catch(UserDoesNotExistException e){
-            throw new UserDoesNotExistException("The user does not exists");
+        throw new UserDoesNotExistException("The user does not exists");
         }
     }
 
