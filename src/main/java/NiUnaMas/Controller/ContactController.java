@@ -1,6 +1,7 @@
 package NiUnaMas.Controller;
 
 import NiUnaMas.Api.ContactApiDoc;
+import NiUnaMas.Controller.Exceptions.CodeDoesNotExistException;
 import NiUnaMas.Controller.Exceptions.ContactAlreadyExists;
 import NiUnaMas.Controller.Exceptions.InvalidCredentialsLoginException;
 import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
@@ -9,7 +10,10 @@ import NiUnaMas.Daos.UserContactDao;
 import NiUnaMas.Daos.UserDao;
 import NiUnaMas.Models.*;
 import NiUnaMas.Varios.Uris;
+import NiUnaMas.Varios.Utils;
+import com.mailjet.client.errors.MailjetException;
 import io.swagger.annotations.ApiParam;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -23,45 +27,54 @@ import java.util.List;
  * Created by Robert on 05/04/2017.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.CONTACT)
 public class ContactController implements ContactApiDoc{
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction addContact(@ApiParam(value = "Contact that the user allows to get notifications." ,required=true )
-                                             @RequestBody ContactDTO dto, @ApiParam(value = "Id of the user") @PathVariable String id) {
-        try{
+                                             @RequestBody ContactDTO dto, @ApiParam(value = "Id of the user") @PathVariable String id) throws UserDoesNotExistException, ContactAlreadyExists{
             User user = userDao.findById(id);
             if(userDao.findById(id)==null)
-                throw new UserDoesNotExistException("");
+                throw new UserDoesNotExistException("The user does not exists");
             else{
+
                 List<UserContact> list;
                 boolean ok = true;
                 Contact test = contactDao.findByPhoneAndDniAndEmail(dto.getContact().getPhone(), dto.getContact().getDni(), dto.getContact().getEmail());
-                if(test == null){
-                    contactDao.save(dto.getContact());
+                if (test == null) {
+                    Contact contact = dto.getContact();
+                    contact.setActive(false);
+                    contact.setActivationCode(Utils.generateCode());
+                    contactDao.save(contact);
                     ArrayList<UserContact> uc = new ArrayList<>();
                     uc.add(new UserContact(user, contactDao.findByEmail(dto.getContact().getEmail()), dto.getRelation()));
                     userContactDao.save(uc);
-                }else{
-                    list = (List)userContactDao.findAll();
+                    try {
+                        Utils.sendMail(user, dto.getContact().getEmail());
+                    }catch (Exception e){
+                        throw new UserDoesNotExistException("Error sending email");
+                    }
+                } else {
+                    list = (List) userContactDao.findAll();
                     ArrayList<UserContact> uc = new ArrayList<>();
-                    for(int i=0;i<list.size() && ok;i++){
-                        if(list.get(i).getContact_id().getPhone() == dto.getContact().getPhone())
+                    for (int i = 0; i < list.size() && ok; i++) {
+                        if (list.get(i).getContact_id().getPhone() == dto.getContact().getPhone())
                             ok = false;
                     }
-                    if(ok){
+                    if (ok) {
                         uc.add(new UserContact(user, contactDao.findByPhoneAndDniAndEmail(dto.getContact().getPhone(), dto.getContact().getDni(), dto.getContact().getEmail()), dto.getRelation()));
                         userContactDao.save(uc);
-                    }else{
-                        throw new ContactAlreadyExists("");
+                        try {
+                            Utils.sendMail(user, dto.getContact().getEmail());
+                        }catch (Exception e){
+                            throw new UserDoesNotExistException("Error sending email");
+                        }
+                    } else {
+                        throw new ContactAlreadyExists("There are already a contact with the same email, phone or DNI.");
                     }
                 }
             }
             return new SuccessfulAction("200", "Contact created succesfully.");
-        }catch (ContactAlreadyExists e){
-            throw  new ContactAlreadyExists("There are already a contact with the same email, phone or DNI.");
-        }catch (Exception e){
-            throw new UserDoesNotExistException("The user does not exists");
-        }
     }
     @RequestMapping(value = "/remove", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction removeContact(@ApiParam(value = "Contact that the user wants to delete." ,required=true )
@@ -80,11 +93,10 @@ public class ContactController implements ContactApiDoc{
         return new SuccessfulAction("200", "Contact deleted succesfully.");
     }
     @RequestMapping(value = "/getContacts", method = RequestMethod.GET)
-    public SuccessfulAction getContacts(@PathVariable String id) {
-        try{
+    public SuccessfulAction getContacts(@PathVariable String id) throws  UserDoesNotExistException{
             User user = userDao.findById(id);
             if(user==null)
-                throw new UserDoesNotExistException("");
+                throw new UserDoesNotExistException("The user does not exists");
             else{
                 List <UserContact> list = (List)userContactDao.findAll();
                 List <Object> listreturn = new ArrayList<>();
@@ -94,9 +106,26 @@ public class ContactController implements ContactApiDoc{
                 }
                 return new SuccessfulAction("200", "Data retrivied successfuly.", listreturn);
             }
-        }catch(UserDoesNotExistException e){
-            throw new UserDoesNotExistException("The user does not exists");
+    }
+
+    @RequestMapping(value = "/verifyCode", method = RequestMethod.POST)
+    public SuccessfulAction verifyCode(@RequestBody String code) throws CodeDoesNotExistException{
+        Contact contact = contactDao.findByActivationCode(code);
+        String message = "";
+        List<Object> list = new ArrayList<>();
+        if(contact != null){
+            if(contact.isActive())
+                message = "The account was already activate.";
+            else {
+                contact.setActive(true);
+                contactDao.save(contact);
+                message = "Account activated successfuly.";
+                list.add(true);
+            }
+        }else{
+            throw new CodeDoesNotExistException("They code does not match.");
         }
+        return new SuccessfulAction("200", message, list);
     }
 
     @Autowired

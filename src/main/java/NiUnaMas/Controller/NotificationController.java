@@ -30,6 +30,7 @@ package NiUnaMas.Controller;
  * @author Robert on 04/04/2017
  */
 @RestController
+@CrossOrigin
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.NOTIFICATION)
 public class NotificationController implements NotificationApiDoc {
 

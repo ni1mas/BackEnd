@@ -16,6 +16,7 @@ import java.util.List;
  * Created by Robert on 11/05/2017.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.KEEPALIVE)
 public class LocationController implements LocationApiDoc{
 

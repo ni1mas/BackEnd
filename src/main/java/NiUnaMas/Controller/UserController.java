@@ -20,6 +20,7 @@ import java.util.List;
  * Created by Robert on 04/04/2017.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER)
 public class UserController implements UserApiDoc {
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

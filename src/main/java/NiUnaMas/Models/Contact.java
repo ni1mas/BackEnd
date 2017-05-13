@@ -42,8 +42,10 @@ public class Contact {
     @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "1")
     private int priority;
-    /*private String activationCode;
-    private boolean active;*/
+    @ApiModelProperty(value = "The dni of the contact", required = true, hidden = true, example = "1")
+    private String activationCode;
+    @ApiModelProperty(value = "The dni of the contact", required = true, hidden = true, example = "1")
+    private boolean active;
     @OneToMany(mappedBy = "user_dni")
     @ApiModelProperty(value = "Users that this Contact belong.", required = false, hidden = true)
     private List<UserContact> userAssoc;
@@ -130,5 +132,21 @@ public class Contact {
 
     public void setUserAssoc(List<UserContact> userAssoc) {
         this.userAssoc = userAssoc;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

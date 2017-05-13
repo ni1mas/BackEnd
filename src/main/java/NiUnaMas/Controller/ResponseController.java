@@ -13,10 +13,7 @@ import NiUnaMas.Varios.Uris;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +22,7 @@ import java.util.List;
  * Created by Robert on 09/05/2017.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(Uris.SERVLET_MAP+Uris.RESPONSE)
 public class ResponseController implements ResponseApiDoc{
     @RequestMapping(value = "/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

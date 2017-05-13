@@ -66,4 +66,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
+
+    @ExceptionHandler({ CodeDoesNotExistException.class })
+    protected ResponseEntity<Object> handleCodeDoesNotExistException(RuntimeException e, WebRequest request) {
+        CodeDoesNotExistException ire = (CodeDoesNotExistException) e;
+        ApiError error = new ApiError("400", ire.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
 }

@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 /**
  * Created by Robert on 12/05/2017.
  */
+@CrossOrigin
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.ID+Uris.AUDIO)
 public class AuidoController {
