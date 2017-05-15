@@ -37,6 +37,25 @@ public class LocationController implements LocationApiDoc{
         }
     }
 
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public SuccessfulAction getKeepAlive(@PathVariable String id) throws UserDoesNotExistException{
+        User user = userDao.findById(id);
+        if(user==null)
+            throw new UserDoesNotExistException("The user does not exists");
+        else{
+            List<Location> list = (List)locationDao.findAll();
+            List<Object> listReturn = new ArrayList<>();
+            for(int i=0;i<list.size();i++){
+                String n1 = list.get(i).getId().getUser_dni();
+                String n2 = user.getDni();
+                if(n1.equalsIgnoreCase(n2)) {
+                    listReturn.add(list.get(i));
+                }
+            }
+            return new SuccessfulAction("200", "Data retrivied successfuly.", listReturn);
+        }
+    }
+
 
 
 

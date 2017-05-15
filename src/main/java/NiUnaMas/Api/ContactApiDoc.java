@@ -21,7 +21,7 @@ public interface ContactApiDoc {
     @RequestMapping(value = "/users/{id}/contact/add",
             produces = { "application/json" },
             method = RequestMethod.POST)
-    SuccessfulAction addContact(@ApiParam(value = "Contact to add." ,required=true ) @RequestBody Contact contact,
+    SuccessfulAction addContact(@ApiParam(value = "Contact to add." ,required=true ) @RequestBody ContactsAdd contact,
                                 @ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
 
     @ApiOperation(value = "Allows to remove contacts", notes = "The remove contact endpoint allow the user to remove contacts",

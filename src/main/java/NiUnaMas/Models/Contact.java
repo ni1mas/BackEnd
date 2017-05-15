@@ -20,27 +20,26 @@ public class Contact {
     @ApiModelProperty(value = "Id of the contact", required = false, hidden = true)
     private int id;
     @Column(unique=true)
+    @ApiModelProperty(value = "The dni of the contact", required = true, example = "74589632G")
     private String dni;
     @NotNull
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "Pepe")
+    @ApiModelProperty(value = "The name of the contact", required = true, example = "Pepe")
     private String name;
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "Severo")
+    @ApiModelProperty(value = "The final name of the contact", required = true, example = "Severo")
     private String fname;
     @NotNull
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "668957423")
+    @ApiModelProperty(value = "The phone of the contact", required = true, example = "668957423")
     @Column(unique=true)
     private int phone;
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "pepe@severo.com")
+    @ApiModelProperty(value = "The email of the contact", required = true, example = "pepe@severo.com")
     @NotNull
     @Column(unique=true)
     private String email;
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "Calle falsa 123")
+    @ApiModelProperty(value = "The address of the contact", required = true, example = "Calle falsa 123")
     private String address;
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "1")
-    private int priority;
-    @ApiModelProperty(value = "The dni of the contact", required = true, hidden = true, example = "1")
+    @ApiModelProperty(value = "The activationCode of the contact", required = true, hidden = true, example = "065a4")
     private String activationCode;
-    @ApiModelProperty(value = "The dni of the contact", required = true, hidden = true, example = "1")
+    @ApiModelProperty(value = "The activation status of the account of the contact", required = true, hidden = true, example = "1")
     private boolean active;
     @OneToMany(mappedBy = "user_dni")
     @ApiModelProperty(value = "Users that this Contact belong.", required = false, hidden = true)
@@ -55,7 +54,6 @@ public class Contact {
         this.phone = c.phone;
         this.email = c.email;
         this.address = c.address;
-        this.priority = c.priority;
     }
 
     public Contact(int phone, String email, String name){
@@ -118,14 +116,6 @@ public class Contact {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
     }
 
     public List<UserContact> getUserAssoc() {

@@ -12,6 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.nio.ByteBuffer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Robert on 12/05/2017.
@@ -46,5 +51,17 @@ public class Utils {
         String code = Hex.toHexString(digest);
         code = code.substring(0, Math.min(code.length(), 5));
         return code;
+    }
+
+    public static Date getDate() {
+        Date date = new Date();
+        try {
+            Date now = new Date();
+            String format = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.GERMANY).format(now);
+            date = new SimpleDateFormat().parse(format);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

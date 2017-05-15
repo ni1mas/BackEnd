@@ -21,4 +21,8 @@ public class Uris {
 
     public static final String AUDIO = "/file";
 
+    public static final String ADMIN = "/admin";
+
+
+
 }

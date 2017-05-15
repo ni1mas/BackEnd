@@ -10,7 +10,6 @@ package NiUnaMas.Controller;
     import NiUnaMas.Daos.NotificationDao;
     import NiUnaMas.Models.SuccessfulAction;
     import NiUnaMas.Models.User;
-    import NiUnaMas.Models.UserContact;
     import NiUnaMas.Varios.Uris;
     import NiUnaMas.Daos.UserDao;
     import io.swagger.annotations.ApiParam;
@@ -18,10 +17,6 @@ package NiUnaMas.Controller;
     import org.springframework.http.MediaType;
     import org.springframework.web.bind.annotation.*;
 
-    import NiUnaMas.Varios.SyncPipe;
-    import java.io.PrintWriter;
-    import java.util.ArrayList;
-    import java.util.Date;
     import java.util.List;
 
 /**
@@ -50,8 +45,10 @@ public class NotificationController implements NotificationApiDoc {
                 if(oldNotification == null || (oldNotification.getType()!=2 && oldNotification.getType()!=3)){
                     throw new Exception("No notifications to cancel.");
                 }else{
-                    oldNotification.setType(1);
-                    notificationDao.save(oldNotification);
+                    if(oldNotification.getType() == 2) {
+                        oldNotification.setType(1);
+                        notificationDao.save(oldNotification);
+                    }
                 }
             }else{
                 if(oldNotification == null) {

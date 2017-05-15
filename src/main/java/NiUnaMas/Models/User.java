@@ -66,7 +66,7 @@ public class User {
         this.address = address;
         this.password = password;
         SHA3.DigestSHA3 sha = new SHA3.Digest512();
-        byte[] digest = sha.digest((dni+email+phone).getBytes());
+        byte[] digest = sha.digest((dni).getBytes());
         this.id = Hex.toHexString(digest);
     }
 
@@ -80,7 +80,7 @@ public class User {
         this.address = user.address;
         this.password = user.password;
         SHA3.DigestSHA3 sha = new SHA3.Digest512();
-        byte[] digest = sha.digest((dni+email+phone).getBytes());
+        byte[] digest = sha.digest((dni).getBytes());
         this.id = Hex.toHexString(digest);
     }
 

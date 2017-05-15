@@ -3,8 +3,10 @@ package NiUnaMas;
 import NiUnaMas.Models.Authorization;
 
 import NiUnaMas.Daos.AuthorizationDao;*/
+import NiUnaMas.Daos.UserWebDao;
 import NiUnaMas.Models.User;
 import NiUnaMas.Daos.UserDao;
+import NiUnaMas.Models.UserWeb;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,16 +27,14 @@ public class DemoApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(final UserDao userDao) {
+	CommandLineRunner init(final UserWebDao userWebDao) {
 
 		return new CommandLineRunner() {
 
 			@Override
 			public void run(String... arg0) throws Exception {
-				User user = new NiUnaMas.Models.User("74384760T", "Robert", "Esclapez García",
-						669754254, 616600727, "admin@policia.es",
-                        "Daimes","hasdi712n310fmasda43");
-				userDao.save(user);
+				UserWeb user = new NiUnaMas.Models.UserWeb("admin@policia.es", "74384760T", "Esclapez García" , "Robert", "hasdi712n310fmasda43", 2);
+				userWebDao.save(user);
 			}
 		};
 

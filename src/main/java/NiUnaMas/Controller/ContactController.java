@@ -33,7 +33,8 @@ public class ContactController implements ContactApiDoc{
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction addContact(@ApiParam(value = "Contact that the user allows to get notifications." ,required=true )
-                                             @RequestBody Contact contact, @ApiParam(value = "Id of the user") @PathVariable String id) throws UserDoesNotExistException, CodeDoesNotExistException{
+                                             @RequestBody ContactsAdd contact, @ApiParam(value = "Id of the user") @PathVariable String id)
+            throws UserDoesNotExistException, CodeDoesNotExistException, ContactAlreadyExists{
             User user = userDao.findById(id);
             if(user == null)
                 throw new UserDoesNotExistException("The user does not exists");
@@ -83,7 +84,13 @@ public class ContactController implements ContactApiDoc{
                     contactAC.setFname(contact.getFname());
                     contactAC.setName(contact.getName());
                     contactAC.setPhone(contact.getPhone());
-                    contactDao.save(contactAC);
+                    Contact comprobacion = contactDao.findByPhoneAndDniAndEmail(contact.getPhone(), contact.getDni(), contact.getEmail());
+                    if(comprobacion == null) {
+                        contactDao.save(contactAC);
+                    }else{
+                        throw new ContactAlreadyExists("There are already a contact with the same phone, dni or email. Please check if you missmatched" +
+                                "any information");
+                    }
                 }
             }
             return new SuccessfulAction("200", "Contact created succesfully.");

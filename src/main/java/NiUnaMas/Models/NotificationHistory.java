@@ -19,17 +19,22 @@ public class NotificationHistory {
     private int type;
     private double coordX;
     private double coordY;
-    private int stateHistory;
     private String notes;
-    @JoinColumn(name = "user_dni")
-    @ManyToOne
-    private User user;
-    @JoinColumn(name = "web_dni")
-    @ManyToOne
-    private UserWeb userWeb;
+    private String user_app;
+    private String user_web;
 
 
-    public NotificationHistory(){
+    public NotificationHistory(){ }
+
+    public NotificationHistory(Date created, Date archived, int type, double coordX, double coordY, String note, String user_app, String user_web){
+        this.archived = archived;
+        this.coordX = coordX;
+        this.coordY = coordY;
+        this.created = created;
+        this.type = type;
+        this.notes = note;
+        this.user_app = user_app;
+        this.user_web = user_web;
     }
 
     public int getId() {
@@ -80,14 +85,6 @@ public class NotificationHistory {
         this.coordY = coordY;
     }
 
-    public int getStateHistory() {
-        return stateHistory;
-    }
-
-    public void setStateHistory(int stateHistory) {
-        this.stateHistory = stateHistory;
-    }
-
     public String getNotes() {
         return notes;
     }
@@ -95,4 +92,12 @@ public class NotificationHistory {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public String getUser() { return user_web; }
+
+    public void setUser(String user) { this.user_web = user; }
+
+    public String getUserWeb() { return user_web; }
+
+    public void setUserWeb(String userWeb) { this.user_web = userWeb; }
 }

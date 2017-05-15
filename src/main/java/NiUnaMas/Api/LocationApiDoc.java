@@ -25,4 +25,13 @@ public interface LocationApiDoc  {
     SuccessfulAction sendKeepAlive(@ApiParam(value = "The last location the user want to sent." ,required=true ) @RequestBody Location location,
                                       @ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
 
+    @ApiOperation(value = "Gets all the keepAlive notification", notes = "The get keepalive endpoint allow the user retrieve all his keepalive notifications.", response = SuccessfulAction.class, tags={ "KeepAlvie", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Data retrivied successfuly.", response = SuccessfulAction.class),
+            @ApiResponse(code = 400, message = "The user does not exists.", response = ApiError.class) })
+    @RequestMapping(value = "/users/{id}/keepalive/get",
+            produces = { "application/json" },
+            method = RequestMethod.POST)
+    SuccessfulAction getKeepAlive(@ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
+
 }
