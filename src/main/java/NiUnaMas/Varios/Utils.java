@@ -44,6 +44,7 @@ public class Utils {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
         byte[] digest = sha.digest(buffer.array());
         String code = Hex.toHexString(digest);
+        code = code.substring(0, Math.min(code.length(), 5));
         return code;
     }
 }

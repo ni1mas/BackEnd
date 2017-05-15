@@ -1,5 +1,6 @@
 package NiUnaMas.Api;
 
+import NiUnaMas.Models.ApiError;
 import NiUnaMas.Models.Location;
 import NiUnaMas.Models.Notification;
 import NiUnaMas.Models.SuccessfulAction;
@@ -17,7 +18,7 @@ public interface LocationApiDoc  {
     @ApiOperation(value = "Sends the keepAlive notification", notes = "The keepalive endpoint allow the user to send his last location.", response = SuccessfulAction.class, tags={ "KeepAlvie", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sent successfuly.", response = SuccessfulAction.class),
-            @ApiResponse(code = 400, message = "The user does not exists.", response = SuccessfulAction.class) })
+            @ApiResponse(code = 400, message = "The user does not exists.", response = ApiError.class) })
     @RequestMapping(value = "/users/{id}/keepalive/send",
             produces = { "application/json" },
             method = RequestMethod.POST)

@@ -24,31 +24,21 @@ import java.util.List;
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER)
 public class UserController implements UserApiDoc {
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SuccessfulAction login(@ApiParam(value = "User that wants to login." ,required=true )@RequestBody User user) {
-        try {
-            user = userDao.getUserByEmailAndPassword(user.getEmail(), user.getPassword());
-            List<Object> list = new ArrayList<>();
-            list.add(user.getId());
-            if (user == null) {
-                throw new Exception();
-            } else {
-                return new SuccessfulAction("200", "Logged successfully.", list);
-            }
-        }catch(Exception e){
+    public SuccessfulAction login(@ApiParam(value = "User that wants to login." ,required=true )@RequestBody User user) throws InvalidCredentialsLoginException{
+        user = userDao.getUserByEmailAndPassword(user.getEmail(), user.getPassword());
+        if (user == null) {
             throw new InvalidCredentialsLoginException("Invalid credentials: The email or the password does not mach");
+        } else {
+            return new SuccessfulAction("200", "Logged successfully.", user.getId());
         }
     }
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SuccessfulAction register(@ApiParam(value = "User to create." ,required=true )@RequestBody User user) {
-        try{
-            if(userDao.getUserByEmailAndPassword(user.getEmail(), user.getPassword())!=null){
-                throw new Exception("");
-            }else{
-                userDao.save(new User(user));
-                return new SuccessfulAction("200", "User created successfully.");
-            }
-        }catch (Exception e){
+    public SuccessfulAction register(@ApiParam(value = "User to create." ,required=true )@RequestBody User user) throws  UserAlreadyExistException{
+        if(userDao.getUserByEmailAndPassword(user.getEmail(), user.getPassword())!=null){
             throw new UserAlreadyExistException("Invalid user: DNI, phone or email already taken.");
+        }else{
+            user = userDao.save(new User(user));
+            return new SuccessfulAction("200", "User created successfully.", user.getId());
         }
     }
     // ------------------------

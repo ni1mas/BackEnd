@@ -19,13 +19,11 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(value = "Id of the contact", required = false, hidden = true)
     private int id;
-    @NotNull
     @Column(unique=true)
     private String dni;
     @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "Pepe")
     private String name;
-    @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "Severo")
     private String fname;
     @NotNull
@@ -36,10 +34,8 @@ public class Contact {
     @NotNull
     @Column(unique=true)
     private String email;
-    @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "Calle falsa 123")
     private String address;
-    @NotNull
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "1")
     private int priority;
     @ApiModelProperty(value = "The dni of the contact", required = true, hidden = true, example = "1")
@@ -60,6 +56,12 @@ public class Contact {
         this.email = c.email;
         this.address = c.address;
         this.priority = c.priority;
+    }
+
+    public Contact(int phone, String email, String name){
+        this.phone = phone;
+        this.email = email;
+        this.name = name;
     }
 
     public int getId() {

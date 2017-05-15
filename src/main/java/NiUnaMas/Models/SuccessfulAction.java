@@ -11,14 +11,14 @@ import java.util.List;
 public class SuccessfulAction {
     private String code;
     private String message;
-    private List<Object> results;
+    private Object results;
     public SuccessfulAction() { }
 
     public SuccessfulAction(String code, String message) {
         this.code = code;
         this.message = message;
     }
-    public SuccessfulAction(String code, String message, List<Object> results) {
+    public SuccessfulAction(String code, String message, Object results) {
         this.code = code;
         this.message = message;
         this.results = results;
@@ -32,10 +32,10 @@ public class SuccessfulAction {
 
     public void setMessage(String message) { this.message = message; }
 
-    public List<Object> getResults() {
+    public Object getResults() {
         return results;
     }
-    public void setResults(List<Object> results) {
+    public void setResults(Object results) {
         this.results = results;
     }
 

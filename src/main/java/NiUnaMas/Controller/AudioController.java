@@ -1,5 +1,6 @@
 package NiUnaMas.Controller;
 
+import NiUnaMas.Api.AudioApiDoc;
 import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
 import NiUnaMas.Daos.LocationDao;
 import NiUnaMas.Daos.UserDao;
@@ -21,13 +22,13 @@ import java.io.FileOutputStream;
 @CrossOrigin
 @RestController
 @RequestMapping(Uris.SERVLET_MAP+Uris.ID+Uris.AUDIO)
-public class AuidoController {
+public class AudioController implements AudioApiDoc {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public SuccessfulAction uploadFile(@RequestParam String id,  @RequestParam("file") MultipartFile file) {
+    public SuccessfulAction uploadFile(@RequestParam String id,  @RequestParam("file") MultipartFile file) throws UserDoesNotExistException {
         try{
             User user = userDao.findById(id);
             if(user==null)
-                throw new UserDoesNotExistException("");
+                throw new UserDoesNotExistException("The user does not exists");
             else{
                 String directory = "C:\\Users\\Robert\\Desktop\\joder\\backend\\UsersFiles\\"+user.getDni()+"-"+user.getName()+"-"+user.getPhone();
                 String fileDirectory = directory +"\\"+ file.getOriginalFilename();
@@ -40,8 +41,6 @@ public class AuidoController {
                 stream.close();
                 return new SuccessfulAction("200", "Sent successfuly.");
             }
-        }catch(UserDoesNotExistException e){
-            throw new UserDoesNotExistException("The user does not exists");
         }catch (Exception e){
             throw new UserDoesNotExistException(e.toString());
         }
