@@ -43,10 +43,8 @@ public class ContactController implements ContactApiDoc{
                 if(contactAC == null){
                     throw new CodeDoesNotExistException("The contact does not exists");
                 }else{
-                    Contact comprobacion = contactDao.findByPhone(contact.getPhone());
-                    Contact comprobacion2 = contactDao.findByEmail(contact.getEmail());
-                    Contact comprobacion3 = contactDao.findByDni(contact.getDni());
-                    if(comprobacion == null && comprobacion2 == null && comprobacion3 == null){
+                    Contact comprobacion = contactDao.findByPhoneOrDniOrEmail(contact.getPhone(), contact.getDni(), contact.getEmail());
+                    if(comprobacion == null){
                         contactAC.setActive(true);
                         contactAC.setAddress(contact.getAddress());
                         contactAC.setDni(contact.getDni());
@@ -54,6 +52,7 @@ public class ContactController implements ContactApiDoc{
                         contactAC.setFname(contact.getFname());
                         contactAC.setName(contact.getName());
                         contactAC.setPhone(contact.getPhone());
+                        contactAC.setActivationCode("");
                         contactDao.save(contactAC);
                     }else{
                         throw new ContactAlreadyExists("There are already a contact with the same phone, dni or email. Please check if you missmatched" +
@@ -72,7 +71,6 @@ public class ContactController implements ContactApiDoc{
         else{
             Contact contactRemove = contactDao.findByPhone(contact.getPhone());
             UserContact uc = userContactDao.findById(new UserContactPK(user.getDni(), contactRemove.getId()));
-            //userContactDao.deleteUserContactById(new UserContactPK(user.getDni(), contactDao.findByEmail(contact.getEmail()).getId()));
             userContactDao.delete(uc);
             contactDao.delete(contactRemove);
         }

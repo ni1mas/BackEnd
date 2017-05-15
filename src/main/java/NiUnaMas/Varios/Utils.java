@@ -11,7 +11,9 @@ import org.bouncycastle.util.encoders.Hex;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,12 +47,13 @@ public class Utils {
         response = client.post(request);
     }
     public static String generateCode(){
-        SHA3.DigestSHA3 sha = new SHA3.Digest224();
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        byte[] digest = sha.digest(buffer.array());
-        String code = Hex.toHexString(digest);
-        code = code.substring(0, Math.min(code.length(), 5));
-        return code;
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        int len = 8;
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
     }
 
     public static Date getDate() {
