@@ -43,15 +43,17 @@ public class ContactController implements ContactApiDoc{
                 if(contactAC == null){
                     throw new CodeDoesNotExistException("The contact does not exists");
                 }else{
-                    contactAC.setActive(true);
-                    contactAC.setAddress(contact.getAddress());
-                    contactAC.setDni(contact.getDni());
-                    contactAC.setEmail(contact.getEmail());
-                    contactAC.setFname(contact.getFname());
-                    contactAC.setName(contact.getName());
-                    contactAC.setPhone(contact.getPhone());
-                    Contact comprobacion = contactDao.findByPhoneAndDniAndEmail(contactAC.getPhone(), contactAC.getDni(), contactAC.getEmail());
-                    if(comprobacion == null) {
+                    Contact comprobacion = contactDao.findByPhone(contact.getPhone());
+                    Contact comprobacion2 = contactDao.findByEmail(contact.getEmail());
+                    Contact comprobacion3 = contactDao.findByDni(contact.getDni());
+                    if(comprobacion == null && comprobacion2 == null && comprobacion3 == null){
+                        contactAC.setActive(true);
+                        contactAC.setAddress(contact.getAddress());
+                        contactAC.setDni(contact.getDni());
+                        contactAC.setEmail(contact.getEmail());
+                        contactAC.setFname(contact.getFname());
+                        contactAC.setName(contact.getName());
+                        contactAC.setPhone(contact.getPhone());
                         contactDao.save(contactAC);
                     }else{
                         throw new ContactAlreadyExists("There are already a contact with the same phone, dni or email. Please check if you missmatched" +
@@ -103,6 +105,11 @@ public class ContactController implements ContactApiDoc{
                 Contact partialContact = new Contact(anyadirContacto.getPhone(), anyadirContacto.getEmail(), anyadirContacto.getName());
                 partialContact.setActivationCode(Utils.generateCode());
                 userContactDao.save(new UserContact(user, contactDao.save(partialContact), anyadirContacto.getRelation()));
+                try {
+                    Utils.sendMail(user, anyadirContacto.getEmail());
+                } catch (MailjetException e) {
+                    e.printStackTrace();
+                }
             }else{
                 throw new ContactAlreadyExists("There are already a contact with the same email or phone.");
             }
