@@ -6,12 +6,15 @@ package NiUnaMas.Controller;
     import NiUnaMas.Api.NotificationApiDoc;
     import NiUnaMas.Controller.Exceptions.InvalidTypeException;
     import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
+    import NiUnaMas.Daos.NotificationHistoryDao;
     import NiUnaMas.Models.Notification;
     import NiUnaMas.Daos.NotificationDao;
+    import NiUnaMas.Models.NotificationHistory;
     import NiUnaMas.Models.SuccessfulAction;
     import NiUnaMas.Models.User;
     import NiUnaMas.Varios.Uris;
     import NiUnaMas.Daos.UserDao;
+    import NiUnaMas.Varios.Utils;
     import io.swagger.annotations.ApiParam;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.MediaType;
@@ -46,8 +49,9 @@ public class NotificationController implements NotificationApiDoc {
                     throw new Exception("No notifications to cancel.");
                 }else{
                     if(oldNotification.getType() == 2) {
-                        oldNotification.setType(1);
-                        notificationDao.save(oldNotification);
+                        notificationHistoryDao.save(new NotificationHistory(notification.getDate(), Utils.getDate(),notification.getType(), notification.getCoordX(),
+                                notification.getCoordY(), "", user.getDni(), ""));
+                        notificationDao.delete(oldNotification);
                     }
                 }
             }else{
@@ -86,7 +90,8 @@ public class NotificationController implements NotificationApiDoc {
     // ------------------------
     // PRIVATE FIELDS
     // ------------------------
-
+    @Autowired
+    private NotificationHistoryDao notificationHistoryDao;
     @Autowired
     private NotificationDao notificationDao;
     @Autowired
