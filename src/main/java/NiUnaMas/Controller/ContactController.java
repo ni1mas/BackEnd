@@ -39,40 +39,6 @@ public class ContactController implements ContactApiDoc{
             if(user == null)
                 throw new UserDoesNotExistException("The user does not exists");
             else{
-                /*List<UserContact> list;
-                boolean ok = true;
-                Contact test = contactDao.findByPhoneAndDniAndEmail(dto.getContact().getPhone(), dto.getContact().getDni(), dto.getContact().getEmail());
-                if (test == null) {
-                    Contact contact = dto.getContact();
-                    contact.setActive(true);
-                    contactDao.save(contact);
-                    ArrayList<UserContact> uc = new ArrayList<>();
-                    uc.add(new UserContact(user, contactDao.findByEmail(dto.getContact().getEmail()), dto.getRelation()));
-                    userContactDao.save(uc);
-                    try {
-                        Utils.sendMail(user, dto.getContact().getEmail());
-                    }catch (Exception e){
-                        throw new UserDoesNotExistException("Error sending email");
-                    }
-                } else {
-                    list = (List) userContactDao.findAll();
-                    ArrayList<UserContact> uc = new ArrayList<>();
-                    for (int i = 0; i < list.size() && ok; i++) {
-                        if (list.get(i).getContact_id().getPhone() == dto.getContact().getPhone())
-                            ok = false;
-                    }
-                    if (ok) {
-                        uc.add(new UserContact(user, contactDao.findByPhoneAndDniAndEmail(dto.getContact().getPhone(), dto.getContact().getDni(), dto.getContact().getEmail()), dto.getRelation()));
-                        userContactDao.save(uc);
-                        try {
-                            Utils.sendMail(user, dto.getContact().getEmail());
-                        }catch (Exception e){
-                            throw new UserDoesNotExistException("Error sending email");
-                        }
-                    } else {
-                        throw new ContactAlreadyExists("There are already a contact with the same email, phone or DNI.");
-                    }
-                }*/
                 Contact contactAC = contactDao.findByActivationCode(contact.getActivationCode());
                 if(contactAC == null){
                     throw new CodeDoesNotExistException("The contact does not exists");
@@ -84,7 +50,7 @@ public class ContactController implements ContactApiDoc{
                     contactAC.setFname(contact.getFname());
                     contactAC.setName(contact.getName());
                     contactAC.setPhone(contact.getPhone());
-                    Contact comprobacion = contactDao.findByPhoneAndDniAndEmail(contact.getPhone(), contact.getDni(), contact.getEmail());
+                    Contact comprobacion = contactDao.findByPhoneAndDniAndEmail(contactAC.getPhone(), contactAC.getDni(), contactAC.getEmail());
                     if(comprobacion == null) {
                         contactDao.save(contactAC);
                     }else{
