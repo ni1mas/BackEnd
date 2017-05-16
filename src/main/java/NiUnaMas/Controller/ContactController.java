@@ -3,6 +3,7 @@ package NiUnaMas.Controller;
 import NiUnaMas.Api.ContactApiDoc;
 import NiUnaMas.Controller.Exceptions.*;
 import NiUnaMas.Daos.ContactDao;
+import NiUnaMas.Daos.LocationDao;
 import NiUnaMas.Daos.UserContactDao;
 import NiUnaMas.Daos.UserDao;
 import NiUnaMas.Models.*;
@@ -97,7 +98,7 @@ public class ContactController implements ContactApiDoc{
             throws CodeDoesNotExistException, UserDoesNotExistException{
         User user = userDao.findById(id);
         if(user != null){
-            Contact contact = contactDao.findByPhone(anyadirContacto.getPhone());
+            Contact contact = contactDao.findByPhoneAndEmail(anyadirContacto.getPhone(), anyadirContacto.getEmail());
             if(contact == null){
                 Contact partialContact = new Contact(anyadirContacto.getPhone(), anyadirContacto.getEmail(), anyadirContacto.getName());
                 partialContact.setActivationCode(Utils.generateCode());
@@ -119,14 +120,8 @@ public class ContactController implements ContactApiDoc{
     @RequestMapping(value = Uris.CONTACT+"/verifyCode", method = RequestMethod.POST)
     public SuccessfulAction verifyCode(@RequestBody String code) throws CodeDoesNotExistException{
         Contact contact = contactDao.findByActivationCode(code);
-        String message = "";
         if(contact != null){
-            if(contact.isActive())
-                message = "The account was already activate.";
-            else {
-                message = "You can process to registrer you account.";
-            }
-            return new SuccessfulAction("200", message, contact);
+            return new SuccessfulAction("200", "You can process to registrer you account.", contact);
         }else{
             throw new CodeDoesNotExistException("They code does not match.");
         }
@@ -139,12 +134,52 @@ public class ContactController implements ContactApiDoc{
         if(exists == null)
             throw new ContactDoesNotExistsException("The account does not exist");
         else {
-            return new SuccessfulAction("200", "Logged successfuly", exists.getId());
+
+            return new SuccessfulAction("200", "Logged successfuly", exists.getIdAccess());
         }
     }
 
+    @RequestMapping(value = Uris.CONTACT+Uris.ID+"/getKeepAlive", method = RequestMethod.POST)
+    public SuccessfulAction getKeepAlive(@PathVariable String id) throws  ContactDoesNotExistsException{
+        Contact exists = contactDao.findByIdAccess(id);
+        if(exists == null)
+            throw new ContactDoesNotExistsException("The account does not exist");
+        else {
+            List<UserContact> uc = userContactDao.find(exists);
+            List<String> dnis = new ArrayList<>();
+            for(int i=0;i<uc.size();i++){
+                dnis.add(uc.get(i).getUser().getDni());
+            }
+            List<List<Location>> loc = new ArrayList<>();
+            for(int i=0;i<dnis.size();i++){
+                loc.add(locationDao.getAllByUser_dni(userDao.findByDni(dnis.get(i))));
+            }
+            return new SuccessfulAction("200", "Logged successfuly", loc);
+        }
+    }
+
+    /*@RequestMapping(value = Uris.CONTACT+Uris.ID+"/getNotification", method = RequestMethod.POST)
+    public SuccessfulAction getNotification(@PathVariable String id) throws  ContactDoesNotExistsException{
+        Contact exists = contactDao.findByIdAccess(id);
+        if(exists == null)
+            throw new ContactDoesNotExistsException("The account does not exist");
+        else {
+            List<UserContact> uc = userContactDao.find(exists);
+            List<String> dnis = new ArrayList<>();
+            for(int i=0;i<uc.size();i++){
+                dnis.add(uc.get(i).getUser().getDni());
+            }
+            List<List<Location>> loc = new ArrayList<>();
+            for(int i=0;i<dnis.size();i++){
+                loc.add(locationDao.getAllByUser_dni(userDao.findByDni(dnis.get(i))));
+            }
+            return new SuccessfulAction("200", "Logged successfuly", loc);
+        }
+    }*/
 
 
+    @Autowired
+    LocationDao locationDao;
     @Autowired
     UserDao userDao;
     @Autowired

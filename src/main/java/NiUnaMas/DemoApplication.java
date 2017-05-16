@@ -36,6 +36,7 @@ public class DemoApplication {
 				UserWeb user = new NiUnaMas.Models.UserWeb("admin@policia.es", "74384760T", "Esclapez García" , "Robert", "hasdi712n310fmasda43", 2);
 				userWebDao.save(user);
 				User userN = new NiUnaMas.Models.User();
+
 			}
 		};
 

@@ -12,8 +12,10 @@ import javax.transaction.Transactional;
 public interface ContactDao extends CrudRepository<Contact, Long> {
     Contact findByEmail(String email);
     Contact findByPhone(int id);
+    Contact findByPhoneAndEmail(int id, String email);
     Contact findByDni(String dni);
     Contact findByPhoneOrDniOrEmail(int phone, String Dni, String email);
     Contact findByActivationCode(String code);
     Contact findByEmailAndPassword(String email, String password);
+    Contact findByIdAccess(String idAccess);
 }
