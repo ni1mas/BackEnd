@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Api(value = "location", description = "the location API")
 public interface LocationApiDoc  {
-    @ApiOperation(value = "Sends the keepAlive notification", notes = "The keepalive endpoint allow the user to send his last location.", response = SuccessfulAction.class, tags={ "KeepAlvie", })
+    @ApiOperation(value = "Sends the keepAlive notification", notes = "The keepalive endpoint allow the user to send his last location.", response = SuccessfulAction.class, tags={ "KeepAlive", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sent successfuly.", response = SuccessfulAction.class),
             @ApiResponse(code = 400, message = "The user does not exists.", response = ApiError.class) })
@@ -25,7 +25,7 @@ public interface LocationApiDoc  {
     SuccessfulAction sendKeepAlive(@ApiParam(value = "The last location the user want to sent." ,required=true ) @RequestBody Location location,
                                       @ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
 
-    @ApiOperation(value = "Gets all the keepAlive notification", notes = "The get keepalive endpoint allow the user retrieve all his keepalive notifications.", response = SuccessfulAction.class, tags={ "KeepAlvie", })
+    @ApiOperation(value = "Gets all the keepAlive notification", notes = "The get keepalive endpoint allow the user retrieve all his keepalive notifications.", response = SuccessfulAction.class, tags={ "KeepAlive", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Data retrivied successfuly.", response = SuccessfulAction.class),
             @ApiResponse(code = 400, message = "The user does not exists.", response = ApiError.class) })

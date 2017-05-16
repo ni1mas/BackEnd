@@ -19,4 +19,5 @@ public interface NotificationDao extends CrudRepository<Notification, Long> {
     Notification getByUser(User user);
     List<Notification> findByUser(User user);
     List<Notification> findAllByOrderByDateDesc();
+    Notification getByUserOrderByDateDesc(User user);
 } // class NotificationDao

@@ -2,10 +2,7 @@ package NiUnaMas.Controller;
 
 import NiUnaMas.Api.ContactApiDoc;
 import NiUnaMas.Controller.Exceptions.*;
-import NiUnaMas.Daos.ContactDao;
-import NiUnaMas.Daos.LocationDao;
-import NiUnaMas.Daos.UserContactDao;
-import NiUnaMas.Daos.UserDao;
+import NiUnaMas.Daos.*;
 import NiUnaMas.Models.*;
 import NiUnaMas.Varios.Uris;
 import NiUnaMas.Varios.Utils;
@@ -109,7 +106,7 @@ public class ContactController implements ContactApiDoc{
                     e.printStackTrace();
                 }
             }else{
-                throw new ContactAlreadyExists("There are already a contact with the same email or phone.");
+                userContactDao.save(new UserContact(user, contact, anyadirContacto.getRelation()));
             }
             return new SuccessfulAction("200", "Contact created successfuly.");
         }else
@@ -158,7 +155,7 @@ public class ContactController implements ContactApiDoc{
         }
     }
 
-    /*@RequestMapping(value = Uris.CONTACT+Uris.ID+"/getNotification", method = RequestMethod.POST)
+    @RequestMapping(value = Uris.CONTACT+Uris.ID+"/getNotification", method = RequestMethod.POST)
     public SuccessfulAction getNotification(@PathVariable String id) throws  ContactDoesNotExistsException{
         Contact exists = contactDao.findByIdAccess(id);
         if(exists == null)
@@ -166,16 +163,14 @@ public class ContactController implements ContactApiDoc{
         else {
             List<UserContact> uc = userContactDao.find(exists);
             List<String> dnis = new ArrayList<>();
-            for(int i=0;i<uc.size();i++){
+            List<Notification> notifications = new ArrayList<>();
+            for(int i=0;i<uc.size();i++) {
                 dnis.add(uc.get(i).getUser().getDni());
+                notifications.add(notificationDao.getByUserOrderByDateDesc(userDao.findByDni(dnis.get(i))));
             }
-            List<List<Location>> loc = new ArrayList<>();
-            for(int i=0;i<dnis.size();i++){
-                loc.add(locationDao.getAllByUser_dni(userDao.findByDni(dnis.get(i))));
-            }
-            return new SuccessfulAction("200", "Logged successfuly", loc);
+            return new SuccessfulAction("200", "Logged successfuly", notifications);
         }
-    }*/
+    }
 
 
     @Autowired
@@ -186,4 +181,6 @@ public class ContactController implements ContactApiDoc{
     ContactDao contactDao;
     @Autowired
     UserContactDao userContactDao;
+    @Autowired
+    NotificationDao notificationDao;
 }
