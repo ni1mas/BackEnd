@@ -7,6 +7,7 @@ import NiUnaMas.Daos.UserDao;
 import NiUnaMas.Models.*;
 import NiUnaMas.Varios.Uris;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.KEEPALIVE)
 public class LocationController implements LocationApiDoc{
 
-    @RequestMapping(value = "/send", method = RequestMethod.POST)
+    @RequestMapping(value = "/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
     public SuccessfulAction sendKeepAlive( @RequestBody Location location, @PathVariable String id) {
         try{
             User user = userDao.findById(id);
