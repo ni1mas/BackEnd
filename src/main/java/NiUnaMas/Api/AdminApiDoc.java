@@ -71,4 +71,26 @@ public interface AdminApiDoc {
     SuccessfulAction cancelNotification(@ApiParam(value = "The id of the admin." ,required=true ) @PathVariable("id") String id,
                                  @ApiParam(value = "The dni of the user.",required=true ) @PathVariable("userDNI") String userDNI,
                                  @ApiParam(value = "The resolution of the case.",required=true ) @RequestBody String note);
+
+    @ApiOperation(value = "Allows the admins to get active notifications of an expeficied user.", notes = "The /getActiveNotifications admin endpoint allow the admins get all the active notifications of an expeficied user using as id their and admin id and the dni of the user.",
+            response = SuccessfulAction.class, tags={ "Admin", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Data retrivied succesfuly.", response = SuccessfulAction.class),
+            @ApiResponse(code = 400, message = "Invalid credentials.", response = ApiError.class)})
+    @RequestMapping(value = "/admin/{id}/getActiveNotifications",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    SuccessfulAction getActiveNotifications(@ApiParam(value = "The id of the admin." ,required=true ) @PathVariable String id);
+
+    @ApiOperation(value = "Allows the admins to get all the closed notificatons.", notes = "The /getActiveNotifications admin endpoint allow the admins get all the notifications that the user dimissed or the admins canceled or closed.",
+            response = SuccessfulAction.class, tags={ "Admin", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Data retrivied succesfuly.", response = SuccessfulAction.class),
+            @ApiResponse(code = 400, message = "The user does not exists.", response = ApiError.class),
+            @ApiResponse(code = 400, message = "Invalid credentials.", response = ApiError.class)})
+    @RequestMapping(value = "/admin/{id}/getClosedNotifications/{userDNI}",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    SuccessfulAction getClosedNotification(@ApiParam(value = "The id of the admin." ,required=true ) @PathVariable("id") String id,
+                                 @ApiParam(value = "The dni of the user.",required=true ) @PathVariable("userDNI") String userDNI);
 }

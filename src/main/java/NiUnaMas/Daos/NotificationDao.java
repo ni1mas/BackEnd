@@ -18,4 +18,5 @@ import java.util.List;
 public interface NotificationDao extends CrudRepository<Notification, Long> {
     Notification getByUser(User user);
     List<Notification> findByUser(User user);
+    List<Notification> findAllByOrderByDateDesc();
 } // class NotificationDao

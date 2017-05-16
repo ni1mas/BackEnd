@@ -2,6 +2,8 @@ package NiUnaMas.Models;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.bouncycastle.jcajce.provider.digest.SHA3;
+import org.bouncycastle.util.encoders.Hex;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +21,8 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(value = "Id of the contact", required = false, hidden = true)
     private int id;
+    @ApiModelProperty(value = "The id that allows to use the api.", hidden = true)
+    private String idAccess;
     @Column(unique=true)
     @ApiModelProperty(value = "The dni of the contact", required = true, example = "74589632G")
     private String dni;
@@ -41,6 +45,8 @@ public class Contact {
     private String activationCode;
     @ApiModelProperty(value = "The activation status of the account of the contact", required = true, hidden = true, example = "1")
     private boolean active;
+    @ApiModelProperty(value = "The password of the contact.", required = true, example = "secretPass")
+    private String password;
     @OneToMany(mappedBy = "user_dni")
     @ApiModelProperty(value = "Users that this Contact belong.", required = false, hidden = true)
     private List<UserContact> userAssoc;
@@ -141,4 +147,12 @@ public class Contact {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
+    public String getIdAccess() { return idAccess; }
+
+    public void setIdAccess(String idAccess) { this.idAccess = idAccess; }
 }

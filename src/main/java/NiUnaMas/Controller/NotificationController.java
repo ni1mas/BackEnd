@@ -49,8 +49,8 @@ public class NotificationController implements NotificationApiDoc {
                     throw new Exception("No notifications to cancel.");
                 }else{
                     if(oldNotification.getType() == 2) {
-                        notificationHistoryDao.save(new NotificationHistory(notification.getDate(), Utils.getDate(),notification.getType(), notification.getCoordX(),
-                                notification.getCoordY(), "", user.getDni(), ""));
+                        notificationHistoryDao.save(new NotificationHistory(oldNotification.getDate(), Utils.getDate(),oldNotification.getType(), oldNotification.getCoordX(),
+                                oldNotification.getCoordY(), "", user.getDni(), ""));
                         notificationDao.delete(oldNotification);
                     }
                 }

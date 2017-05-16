@@ -111,6 +111,32 @@ public class AdminController implements AdminApiDoc{
         }
     }
 
+    @RequestMapping(value = "/getClosedNotifications/{userDNI}", method = RequestMethod.GET)
+    public SuccessfulAction getClosedNotification(@PathVariable String id, @PathVariable String userDNI) throws UserDoesNotExistException {
+        UserWeb uw = userWebDao.findById(id);
+        if(uw != null){
+            User user = userDao.findByDni(userDNI);
+            if(user != null) {
+                return new SuccessfulAction("200", "Data sent successfully.", notificationHistoryDao.findNotificationHistoryByApp(userDNI));
+            }else{
+                throw new UserDoesNotExistException("The user does not exists.");
+            }
+        }else{
+            throw new UserDoesNotExistException("Invalid credentials.");
+        }
+    }
+
+    @RequestMapping(value = "/getActiveNotifications", method = RequestMethod.GET)
+    public SuccessfulAction getActiveNotifications(@PathVariable String id) throws UserDoesNotExistException {
+        UserWeb uw = userWebDao.findById(id);
+        if(uw != null){
+            return new SuccessfulAction("200", "Data sent successfully.", notificationDao.findAllByOrderByDateDesc());
+        }else{
+            throw new UserDoesNotExistException("Invalid credentials.");
+        }
+    }
+
+
     @Autowired
     NotificationHistoryDao notificationHistoryDao;
     @Autowired

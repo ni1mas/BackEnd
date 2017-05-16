@@ -20,8 +20,8 @@ public class NotificationHistory {
     private double coordX;
     private double coordY;
     private String notes;
-    private String user_app;
-    private String user_web;
+    private String app;
+    private String web;
 
 
     public NotificationHistory(){ }
@@ -33,8 +33,8 @@ public class NotificationHistory {
         this.created = created;
         this.type = type;
         this.notes = note;
-        this.user_app = user_app;
-        this.user_web = user_web;
+        this.app = user_app;
+        this.web = user_web;
     }
 
     public int getId() {
@@ -81,9 +81,7 @@ public class NotificationHistory {
         return coordY;
     }
 
-    public void setCoordY(double coordY) {
-        this.coordY = coordY;
-    }
+    public void setCoordY(double coordY) { this.coordY = coordY; }
 
     public String getNotes() {
         return notes;
@@ -93,11 +91,11 @@ public class NotificationHistory {
         this.notes = notes;
     }
 
-    public String getUser() { return user_web; }
+    public String getApp() { return app; }
 
-    public void setUser(String user) { this.user_web = user; }
+    public void setApp(String app) { this.app = app; }
 
-    public String getUserWeb() { return user_web; }
+    public String getWeb() { return web; }
 
-    public void setUserWeb(String userWeb) { this.user_web = userWeb; }
+    public void setWeb(String web) { this.web = web; }
 }

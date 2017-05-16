@@ -27,7 +27,7 @@ public class LocationController implements LocationApiDoc{
             User user = userDao.findById(id);
             if(user==null)
                 throw new UserDoesNotExistException("");
-            else{
+            else {
                 location.setUser_dni(user);
                 location.setId(new LocationPK(location.getId().getDate(), user.getDni()));
                 locationDao.save(location);
@@ -56,9 +56,6 @@ public class LocationController implements LocationApiDoc{
             return new SuccessfulAction("200", "Data retrivied successfuly.", listReturn);
         }
     }
-
-
-
 
     @Autowired
     private UserDao userDao;

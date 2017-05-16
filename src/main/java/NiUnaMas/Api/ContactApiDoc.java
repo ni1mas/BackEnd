@@ -18,11 +18,10 @@ public interface ContactApiDoc {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Contact created succesfully.", response = SuccessfulAction.class),
             @ApiResponse(code = 400, message = "The user does not exists.", response = ApiError.class) })
-    @RequestMapping(value = "/users/{id}/contact/add",
+    @RequestMapping(value = "/users/{id}/contact/register",
             produces = { "application/json" },
             method = RequestMethod.POST)
-    SuccessfulAction addContact(@ApiParam(value = "Contact to add." ,required=true ) @RequestBody ContactsAdd contact,
-                                @ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
+    SuccessfulAction addContact(@ApiParam(value = "Contact to add." ,required=true ) @RequestBody ContactsAdd contact);
 
     @ApiOperation(value = "Allows to remove contacts", notes = "The remove contact endpoint allow the user to remove contacts",
             response = SuccessfulAction.class, tags={ "Contact", })

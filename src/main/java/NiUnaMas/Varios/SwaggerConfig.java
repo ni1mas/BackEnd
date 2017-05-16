@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class SwaggerConfig {
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("NiUnaMenos API")
+                .title("NiUnaMas API")
                 .description("Api's TAES Proyect")
                 .license("")
                 .licenseUrl("http://unlicense.org")

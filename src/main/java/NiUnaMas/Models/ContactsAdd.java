@@ -9,20 +9,22 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Expecific Contact for the add enpoint.", description = "Complete data of a model ContactAdd")
 
 public class ContactsAdd {
-    @ApiModelProperty(value = "The activationCode of the contact", required = true, example = "065a4")
+    @ApiModelProperty(value = "The activationCode of the contact.", required = true, example = "065a4")
     private String activationCode;
-    @ApiModelProperty(value = "The address of the contact", required = true, example = "Calle falsa 123")
+    @ApiModelProperty(value = "The address of the contact.", required = true, example = "Calle falsa 123")
     private String address;
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "74589632G")
+    @ApiModelProperty(value = "The dni of the contact.", required = true, example = "74589632G")
     private String dni;
-    @ApiModelProperty(value = "The dni of the contact", required = true, example = "pepe@severo.com")
+    @ApiModelProperty(value = "The dni of the contact.", required = true, example = "pepe@severo.com")
     private String email;
-    @ApiModelProperty(value = "The final name of the contact", required = true, example = "Severo")
+    @ApiModelProperty(value = "The final name of the contact.", required = true, example = "Severo")
     private String fname;
-    @ApiModelProperty(value = "The name of the contact", required = true, example = "Pepe")
+    @ApiModelProperty(value = "The name of the contact.", required = true, example = "Pepe")
     private String name;
-    @ApiModelProperty(value = "The phone of the contact", required = true, example = "668957423")
+    @ApiModelProperty(value = "The phone of the contact.", required = true, example = "668957423")
     private int phone;
+    @ApiModelProperty(value = "The password of the contact.", required = true, example = "secretPassword")
+    private String password;
 
     public String getActivationCode() {
         return activationCode;
@@ -79,4 +81,8 @@ public class ContactsAdd {
     public void setPhone(int phone) {
         this.phone = phone;
     }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
 }

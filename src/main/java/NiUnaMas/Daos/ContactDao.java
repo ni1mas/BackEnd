@@ -15,4 +15,5 @@ public interface ContactDao extends CrudRepository<Contact, Long> {
     Contact findByDni(String dni);
     Contact findByPhoneOrDniOrEmail(int phone, String Dni, String email);
     Contact findByActivationCode(String code);
+    Contact findByEmailAndPassword(String email, String password);
 }

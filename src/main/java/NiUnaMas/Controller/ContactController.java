@@ -1,10 +1,7 @@
 package NiUnaMas.Controller;
 
 import NiUnaMas.Api.ContactApiDoc;
-import NiUnaMas.Controller.Exceptions.CodeDoesNotExistException;
-import NiUnaMas.Controller.Exceptions.ContactAlreadyExists;
-import NiUnaMas.Controller.Exceptions.InvalidCredentialsLoginException;
-import NiUnaMas.Controller.Exceptions.UserDoesNotExistException;
+import NiUnaMas.Controller.Exceptions.*;
 import NiUnaMas.Daos.ContactDao;
 import NiUnaMas.Daos.UserContactDao;
 import NiUnaMas.Daos.UserDao;
@@ -14,6 +11,8 @@ import NiUnaMas.Varios.Utils;
 import com.mailjet.client.errors.MailjetException;
 import io.swagger.annotations.ApiParam;
 import org.aspectj.apache.bcel.classfile.Code;
+import org.bouncycastle.jcajce.provider.digest.SHA3;
+import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -28,41 +27,41 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.CONTACT)
+@RequestMapping(Uris.SERVLET_MAP)
 public class ContactController implements ContactApiDoc{
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = Uris.CONTACT+"/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction addContact(@ApiParam(value = "Contact that the user allows to get notifications." ,required=true )
-                                             @RequestBody ContactsAdd contact, @ApiParam(value = "Id of the user") @PathVariable String id)
-            throws UserDoesNotExistException, CodeDoesNotExistException, ContactAlreadyExists{
-            User user = userDao.findById(id);
-            if(user == null)
-                throw new UserDoesNotExistException("The user does not exists");
-            else{
-                Contact contactAC = contactDao.findByActivationCode(contact.getActivationCode());
-                if(contactAC == null){
-                    throw new CodeDoesNotExistException("The contact does not exists");
+                                             @RequestBody ContactsAdd contact)
+            throws CodeDoesNotExistException, ContactAlreadyExists{
+            Contact contactAC = contactDao.findByActivationCode(contact.getActivationCode());
+            if(contactAC == null){
+                throw new CodeDoesNotExistException("The contact does not exists");
+            }else{
+                Contact comprobacion = contactDao.findByPhoneOrDniOrEmail(contact.getPhone(), contact.getDni(), contact.getEmail());
+                if(comprobacion == null){
+                    contactAC.setActive(true);
+                    contactAC.setAddress(contact.getAddress());
+                    contactAC.setDni(contact.getDni());
+                    contactAC.setEmail(contact.getEmail());
+                    contactAC.setFname(contact.getFname());
+                    contactAC.setName(contact.getName());
+                    contactAC.setPhone(contact.getPhone());
+                    contactAC.setPassword(contact.getPassword());
+                    contactAC.setActivationCode("");
+                    SHA3.DigestSHA3 sha = new SHA3.Digest512();
+                    byte[] digest = sha.digest((contact.getEmail()).getBytes());
+                    contactAC.setIdAccess(Hex.toHexString(digest));
+                    contactDao.save(contactAC);
                 }else{
-                    Contact comprobacion = contactDao.findByPhoneOrDniOrEmail(contact.getPhone(), contact.getDni(), contact.getEmail());
-                    if(comprobacion == null){
-                        contactAC.setActive(true);
-                        contactAC.setAddress(contact.getAddress());
-                        contactAC.setDni(contact.getDni());
-                        contactAC.setEmail(contact.getEmail());
-                        contactAC.setFname(contact.getFname());
-                        contactAC.setName(contact.getName());
-                        contactAC.setPhone(contact.getPhone());
-                        contactAC.setActivationCode("");
-                        contactDao.save(contactAC);
-                    }else{
-                        throw new ContactAlreadyExists("There are already a contact with the same phone, dni or email. Please check if you missmatched" +
-                                "any information");
-                    }
+                    throw new ContactAlreadyExists("There are already a contact with the same phone, dni or email. Please check if you missmatched" +
+                            "any information");
                 }
             }
-            return new SuccessfulAction("200", "Contact created succesfully.");
+
+            return new SuccessfulAction("200", "Contact created succesfully.", contactAC.getId());
     }
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = Uris.USER+Uris.ID+Uris.CONTACT+"/remove", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction removeContact(@ApiParam(value = "Contact that the user wants to delete." ,required=true )
                                              @RequestBody Contact contact, @PathVariable String id) throws UserDoesNotExistException{
         User user = userDao.findById(id);
@@ -77,7 +76,7 @@ public class ContactController implements ContactApiDoc{
 
         return new SuccessfulAction("200", "Contact deleted succesfully.");
     }
-    @RequestMapping(value = "/getContacts", method = RequestMethod.GET)
+    @RequestMapping(value = Uris.USER+Uris.ID+Uris.CONTACT+"/getContacts", method = RequestMethod.GET)
     public SuccessfulAction getContacts(@PathVariable String id) throws  UserDoesNotExistException{
             User user = userDao.findById(id);
             if(user==null)
@@ -93,7 +92,7 @@ public class ContactController implements ContactApiDoc{
             }
     }
 
-    @RequestMapping(value = "/addPartialContact", method = RequestMethod.POST)
+    @RequestMapping(value = Uris.USER+Uris.ID+Uris.CONTACT+"/addPartialContact", method = RequestMethod.POST)
     public SuccessfulAction addPartialContact(@RequestBody AnyadirContacto anyadirContacto,  @ApiParam(value = "Id of the user") @PathVariable String id)
             throws CodeDoesNotExistException, UserDoesNotExistException{
         User user = userDao.findById(id);
@@ -117,23 +116,34 @@ public class ContactController implements ContactApiDoc{
 
     }
 
-    @RequestMapping(value = "/verifyCode", method = RequestMethod.POST)
+    @RequestMapping(value = Uris.CONTACT+"/verifyCode", method = RequestMethod.POST)
     public SuccessfulAction verifyCode(@RequestBody String code) throws CodeDoesNotExistException{
         Contact contact = contactDao.findByActivationCode(code);
         String message = "";
-        boolean response = false;
         if(contact != null){
             if(contact.isActive())
                 message = "The account was already activate.";
             else {
                 message = "You can process to registrer you account.";
-                response = true;
             }
+            return new SuccessfulAction("200", message, contact);
         }else{
             throw new CodeDoesNotExistException("They code does not match.");
         }
-        return new SuccessfulAction("200", message, response);
+
     }
+
+    @RequestMapping(value = Uris.CONTACT+"/loginContact", method = RequestMethod.POST)
+    public SuccessfulAction loginContact(@RequestBody Contact contact) throws  ContactDoesNotExistsException{
+        Contact exists = contactDao.findByEmailAndPassword(contact.getEmail(), contact.getPassword());
+        if(exists == null)
+            throw new ContactDoesNotExistsException("The account does not exist");
+        else {
+            return new SuccessfulAction("200", "Logged successfuly", exists.getId());
+        }
+    }
+
+
 
     @Autowired
     UserDao userDao;
