@@ -24,7 +24,7 @@ import java.util.Locale;
  * Created by Robert on 12/05/2017.
  */
 public class Utils {
-    public static void sendMail(User user, String email) throws MailjetException {
+    public static void sendMail(User user, String email, String code) throws MailjetException {
         MailjetClient client;
         MailjetRequest request;
         MailjetResponse response;
@@ -39,7 +39,7 @@ public class Utils {
                         "Gracias por ayudar.")
                 .property(Email.HTMLPART, "Hola, "+user.getName()+" "+user.getFname()+" desea que usted sea su contacto de emergencia." +
                         " Si no ha sido un malentendido, por favor descarguese la aplicación [Aquí link AppStore] e introduzca el siguiente" +
-                        " código : EJ412uf.\n" +
+                        " código : "+code+".\n" +
                         "Gracias por ayudar.")
                 .property(Email.RECIPIENTS, new JSONArray()
                         .put(new JSONObject()

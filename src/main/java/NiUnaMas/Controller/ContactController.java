@@ -37,10 +37,30 @@ public class ContactController implements ContactApiDoc{
                 throw new CodeDoesNotExistException("The contact does not exists");
             }else{
                 Contact comprobacion = contactDao.findByPhoneOrDniOrEmail(contact.getPhone(), contact.getDni(), contact.getEmail());
-                if(comprobacion == null){
+                if(comprobacion != null){
+                    if(comprobacion.getActivationCode().equalsIgnoreCase(contact.getActivationCode())){
+                        comprobacion.setActive(true);
+                        comprobacion.setAddress(contact.getAddress());
+                        comprobacion.setDni(contact.getDni().toUpperCase());
+                        comprobacion.setEmail(contact.getEmail());
+                        comprobacion.setFname(contact.getFname());
+                        comprobacion.setName(contact.getName());
+                        comprobacion.setPhone(contact.getPhone());
+                        comprobacion.setPassword(contact.getPassword());
+                        comprobacion.setActivationCode("");
+                        SHA3.DigestSHA3 sha = new SHA3.Digest512();
+                        byte[] digest = sha.digest((contact.getEmail()).getBytes());
+                        comprobacion.setIdAccess(Hex.toHexString(digest));
+                        contactAC.setIdAccess(Hex.toHexString(digest));
+                        contactDao.save(comprobacion);
+                    }else{
+                        throw new ContactAlreadyExists("There are already a contact with the same phone, dni or email. Please check if you missmatched" +
+                                "any information");
+                    }
+                }else{
                     contactAC.setActive(true);
                     contactAC.setAddress(contact.getAddress());
-                    contactAC.setDni(contact.getDni());
+                    contactAC.setDni(contact.getDni().toUpperCase());
                     contactAC.setEmail(contact.getEmail());
                     contactAC.setFname(contact.getFname());
                     contactAC.setName(contact.getName());
@@ -51,13 +71,10 @@ public class ContactController implements ContactApiDoc{
                     byte[] digest = sha.digest((contact.getEmail()).getBytes());
                     contactAC.setIdAccess(Hex.toHexString(digest));
                     contactDao.save(contactAC);
-                }else{
-                    throw new ContactAlreadyExists("There are already a contact with the same phone, dni or email. Please check if you missmatched" +
-                            "any information");
                 }
             }
 
-            return new SuccessfulAction("200", "Contact created succesfully.", contactAC.getId());
+            return new SuccessfulAction("200", "Contact created succesfully.", contactAC.getIdAccess());
     }
     @RequestMapping(value = Uris.USER+Uris.ID+Uris.CONTACT+"/remove", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction removeContact(@ApiParam(value = "Contact that the user wants to delete." ,required=true )
@@ -101,11 +118,12 @@ public class ContactController implements ContactApiDoc{
                 partialContact.setActivationCode(Utils.generateCode());
                 userContactDao.save(new UserContact(user, contactDao.save(partialContact), anyadirContacto.getRelation()));
                 try {
-                    Utils.sendMail(user, anyadirContacto.getEmail());
+                    Utils.sendMail(user, anyadirContacto.getEmail(), partialContact.getActivationCode());
                 } catch (MailjetException e) {
                     e.printStackTrace();
                 }
             }else{
+                //devuelve error tocho si ya lo tiene dentro
                 userContactDao.save(new UserContact(user, contact, anyadirContacto.getRelation()));
             }
             return new SuccessfulAction("200", "Contact created successfuly.");

@@ -57,7 +57,7 @@ public class User {
 
     public User(String dni, String name, String fname, int phone, int phone2, String email,
                 String address, String password){
-        this.dni = dni;
+        this.dni = dni.toUpperCase();
         this.name = name;
         this.fname = fname;
         this.phone = phone;
@@ -71,7 +71,7 @@ public class User {
     }
 
     public User(User user){
-        this.dni = user.getDni();
+        this.dni = user.getDni().toUpperCase();
         this.name = user.name;
         this.fname = user.fname;
         this.phone = user.phone;

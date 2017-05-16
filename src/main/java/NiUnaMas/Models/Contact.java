@@ -54,7 +54,7 @@ public class Contact {
     public Contact (){}
 
     public Contact(Contact c) {
-        this.dni = c.dni;
+        this.dni = c.dni.toUpperCase();
         this.name = c.name;
         this.fname = c.fname;
         this.phone = c.phone;
