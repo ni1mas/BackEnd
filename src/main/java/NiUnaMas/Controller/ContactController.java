@@ -154,7 +154,7 @@ public class ContactController implements ContactApiDoc{
         }
     }
 
-    @RequestMapping(value = Uris.CONTACT+Uris.ID+"/getKeepAlive", method = RequestMethod.POST)
+    @RequestMapping(value = Uris.CONTACT+Uris.ID+"/getKeepAlive", method = RequestMethod.GET)
     public SuccessfulAction getKeepAlive(@PathVariable String id) throws  ContactDoesNotExistsException{
         Contact exists = contactDao.findByIdAccess(id);
         if(exists == null)
@@ -173,7 +173,7 @@ public class ContactController implements ContactApiDoc{
         }
     }
 
-    @RequestMapping(value = Uris.CONTACT+Uris.ID+"/getNotification", method = RequestMethod.POST)
+    @RequestMapping(value = Uris.CONTACT+Uris.ID+"/getNotification", method = RequestMethod.GET)
     public SuccessfulAction getNotification(@PathVariable String id) throws  ContactDoesNotExistsException{
         Contact exists = contactDao.findByIdAccess(id);
         if(exists == null)

@@ -64,5 +64,35 @@ public interface ContactApiDoc {
     @RequestMapping(value = "/users/{id}/contact/verifyCode",
             produces = { "application/json" },
             method = RequestMethod.POST)
-    SuccessfulAction verifyCode(@RequestBody String code);
+    SuccessfulAction verifyCode(@ApiParam(value = "The code that the user has to create his account.",required=true ) @RequestBody String code);
+
+    @ApiOperation(value = "Allow the contacts to log in the aplication.", notes = "The loginContact endpoint allows the contacts to log in the app so they can recive the notifications and keepalive of their users",
+            response = SuccessfulAction.class, tags={ "Contact", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Logged successfuly", response = SuccessfulAction.class),
+            @ApiResponse(code = 400, message = "The account does not exist", response = ApiError.class)})
+    @RequestMapping(value = "/contact/loginContact",
+            produces = { "application/json" },
+            method = RequestMethod.POST)
+    SuccessfulAction loginContact(@ApiParam(value = "The email and password of the contact.",required=true ) @RequestBody Contact contact);
+
+    @ApiOperation(value = "Allow the contacts to get all the keealive notifications of his vinculated user.", notes = "Allow the contacts to get all the keepalive notifications of his vinculated users. The endpoint returns a list of keepAlive notifications lists.",
+            response = SuccessfulAction.class, tags={ "Contact", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Logged successfuly", response = SuccessfulAction.class),
+            @ApiResponse(code = 400, message = "The account does not exist", response = ApiError.class)})
+    @RequestMapping(value = "/contact/{id}/getKeepAlive",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    SuccessfulAction getKeepAlive(@ApiParam(value = "ID of the contact.",required=true ) @PathVariable String id);
+
+    @ApiOperation(value = "Allow the contacts to get all the notifications of his vinculated user.", notes = "Allow the contacts to get all the notifications of his vinculated users. The endpoint returns a notifiactions list.",
+            response = SuccessfulAction.class, tags={ "Contact", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Logged successfuly", response = SuccessfulAction.class),
+            @ApiResponse(code = 400, message = "The account does not exist", response = ApiError.class)})
+    @RequestMapping(value = "/contact/{id}/getNotification",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    SuccessfulAction getNotification(@ApiParam(value = "ID of the contact.",required=true ) @PathVariable String id);
 }

@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Api(value = "admin", description = "the admin API")
 public interface AdminApiDoc {
-    @ApiOperation(value = "Allows the admins to get all the notifications.", notes = "The getNotifications admin endpoint allow the admins get the notifications the users sent.",
+    @ApiOperation(value = "Allows the admins to get active notifications of an expeficied user.", notes = "The /getActiveNotifications admin endpoint allow the admins get all the active notifications of an expeficied user using as id their and admin id and the dni of the user." ,
             response = SuccessfulAction.class, tags={ "Admin", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Data retrivied succesfuly.", response = SuccessfulAction.class),
@@ -72,7 +72,7 @@ public interface AdminApiDoc {
                                  @ApiParam(value = "The dni of the user.",required=true ) @PathVariable("userDNI") String userDNI,
                                  @ApiParam(value = "The resolution of the case.",required=true ) @RequestBody String note);
 
-    @ApiOperation(value = "Allows the admins to get active notifications of an expeficied user.", notes = "The /getActiveNotifications admin endpoint allow the admins get all the active notifications of an expeficied user using as id their and admin id and the dni of the user.",
+    @ApiOperation(value = "Allows the admins to get all the notifications.",notes = "The getNotifications admin endpoint allow the admins get the notifications the users sent.",
             response = SuccessfulAction.class, tags={ "Admin", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Data retrivied succesfuly.", response = SuccessfulAction.class),
@@ -93,4 +93,5 @@ public interface AdminApiDoc {
             method = RequestMethod.GET)
     SuccessfulAction getClosedNotification(@ApiParam(value = "The id of the admin." ,required=true ) @PathVariable("id") String id,
                                  @ApiParam(value = "The dni of the user.",required=true ) @PathVariable("userDNI") String userDNI);
+
 }
