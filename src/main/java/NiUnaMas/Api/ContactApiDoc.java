@@ -95,4 +95,14 @@ public interface ContactApiDoc {
             produces = { "application/json" },
             method = RequestMethod.GET)
     SuccessfulAction getNotification(@ApiParam(value = "ID of the contact.",required=true ) @PathVariable String id);
+
+    @ApiOperation(value = "Allow the contacts to get all the addresses of all his vinculated users.", notes = "Allow the contacts to get all the addresses of all his vinculated users by using his id.",
+            response = SuccessfulAction.class, tags={ "Contact", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Data retrivied successfuly.", response = SuccessfulAction.class),
+            @ApiResponse(code = 400, message = "The account does not exist", response = ApiError.class)})
+    @RequestMapping(value = "/contact/{id}/getAddress",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    SuccessfulAction getAddress(@ApiParam(value = "ID of the contact.",required=true ) @PathVariable String id);
 }

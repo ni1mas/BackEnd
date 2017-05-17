@@ -192,6 +192,21 @@ public class ContactController implements ContactApiDoc{
             return new SuccessfulAction("200", "Logged successfuly", notifications);
         }
     }
+    @RequestMapping(value = Uris.CONTACT+Uris.ID+"/getAddress", method = RequestMethod.GET)
+    public SuccessfulAction getAddress(@PathVariable String id) throws  ContactDoesNotExistsException{
+        Contact exists = contactDao.findByIdAccess(id);
+        if(exists == null)
+            throw new ContactDoesNotExistsException("The account does not exist");
+        else {
+            List<UserContact> uc = userContactDao.find(exists);
+            List<User> user = new ArrayList<>();
+            for(int i=0;i<uc.size();i++) {
+                user.add(uc.get(i).getUser());
+            }
+            return new SuccessfulAction("200", "Data retrivied successfuly.", user);
+        }
+    }
+
 
 
     @Autowired
