@@ -66,6 +66,8 @@ public class NotificationController implements NotificationApiDoc {
                 }else
                     if((oldNotification.getType() == 2 && notification.getType() == 3)){
                         oldNotification.setType(3);
+                        oldNotification.setCoordX(notification.getCoordX());
+                        oldNotification.setCoordY(notification.getCoordY());
                         notificationDao.save(oldNotification);
                     }
             }
