@@ -19,7 +19,7 @@ public interface LocationApiDoc  {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sent successfuly.", response = SuccessfulAction.class),
             @ApiResponse(code = 400, message = "The user does not exists.", response = ApiError.class) })
-    @RequestMapping(value = "/users/{id}/keepalive/send",
+    @RequestMapping(value = "/users/{id}/keepalive/send/{date}",
             produces = { "application/json" },
             method = RequestMethod.POST)
     SuccessfulAction sendKeepAlive(@ApiParam(value = "The last location the user want to sent." ,required=true ) @RequestBody Location location,
