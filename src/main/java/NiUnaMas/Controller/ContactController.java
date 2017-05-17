@@ -184,7 +184,10 @@ public class ContactController implements ContactApiDoc{
             List<Notification> notifications = new ArrayList<>();
             for(int i=0;i<uc.size();i++) {
                 dnis.add(uc.get(i).getUser().getDni());
-                notifications.add(notificationDao.getByUserOrderByDateDesc(userDao.findByDni(dnis.get(i))));
+                Notification n = notificationDao.getByUserOrderByDateDesc(userDao.findByDni(dnis.get(i)));
+                if(n != null) {
+                    notifications.add(n);
+                }
             }
             return new SuccessfulAction("200", "Logged successfuly", notifications);
         }
