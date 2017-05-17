@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,15 +22,16 @@ import java.util.List;
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.KEEPALIVE)
 public class LocationController implements LocationApiDoc{
 
-    @RequestMapping(value = "/send", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
-    public SuccessfulAction sendKeepAlive( @RequestBody Location location, @PathVariable String id) {
+    @RequestMapping(value = "/send/{date}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+    public SuccessfulAction sendKeepAlive( @RequestBody Location location, @PathVariable String id
+                                            ,@PathVariable("date") long date) {
         try{
             User user = userDao.findById(id);
             if(user==null)
                 throw new UserDoesNotExistException("");
             else {
                 location.setUser_dni(user);
-                location.setId(new LocationPK(location.getId().getDate(), user.getDni()));
+                location.setId(new LocationPK(new Date(date), user.getDni()));
                 locationDao.save(location);
                 return new SuccessfulAction("200", "Sent successfuly.");
             }

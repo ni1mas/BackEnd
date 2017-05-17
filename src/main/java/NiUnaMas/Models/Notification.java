@@ -48,7 +48,7 @@ public class Notification {
     private double coordY;
 
     @NotNull
-    @ApiModelProperty(value = "The date when the notification was sent", required = true, example = "2017-05-11T14:52:36.251Z")
+    @ApiModelProperty(value = "The date when the notification was sent", required = true, hidden = true, example = "1495036057894")
     private Date date;
     /////
     // Public...
@@ -59,11 +59,10 @@ public class Notification {
         this.id = id;
     }
 
-    public Notification(int type, double coordX, double coordY, Date date){
+    public Notification(int type, double coordX, double coordY){
         this.type = type;
         this.coordX = coordX;
         this.coordY = coordY;
-        this.date = date;
     }
 
     // Getter and setter methods

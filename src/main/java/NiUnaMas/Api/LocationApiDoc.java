@@ -23,7 +23,8 @@ public interface LocationApiDoc  {
             produces = { "application/json" },
             method = RequestMethod.POST)
     SuccessfulAction sendKeepAlive(@ApiParam(value = "The last location the user want to sent." ,required=true ) @RequestBody Location location,
-                                      @ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id);
+                                      @ApiParam(value = "ID of the user.",required=true ) @PathVariable("id") String id,
+                                   @ApiParam(value = "Date of the keep alive") @PathVariable("date") long date);
 
     @ApiOperation(value = "Gets all the keepAlive notification", notes = "The get keepalive endpoint allow the user retrieve all his keepalive notifications.", response = SuccessfulAction.class, tags={ "KeepAlive", })
     @ApiResponses(value = {

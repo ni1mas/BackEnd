@@ -20,7 +20,10 @@ package NiUnaMas.Controller;
     import org.springframework.http.MediaType;
     import org.springframework.web.bind.annotation.*;
 
+    import java.text.SimpleDateFormat;
+    import java.util.Date;
     import java.util.List;
+    import java.util.TimeZone;
 
 /**
  * A class to test interactions with the MySQL database using the NotificationDao class.
@@ -32,9 +35,9 @@ package NiUnaMas.Controller;
 @RequestMapping(Uris.SERVLET_MAP+Uris.USER+Uris.ID+Uris.NOTIFICATION)
 public class NotificationController implements NotificationApiDoc {
 
-    @RequestMapping(value = "/sendNotification", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/sendNotification/{date}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public SuccessfulAction sendNotification(@ApiParam(value = "Notification sent." ,required=true )@RequestBody Notification notification,
-                                             @PathVariable String id) {
+                                             @PathVariable String id, @PathVariable("date") long date) {
         try {
             if(notification.getType()!=1 && notification.getType()!= 2&& notification.getType()!=3){
                 throw new Exception("Invalid type.");
@@ -56,7 +59,8 @@ public class NotificationController implements NotificationApiDoc {
                 }
             }else{
                 if(oldNotification == null) {
-                    notification = new Notification(notification.getType(), notification.getCoordX(), notification.getCoordY(), notification.getDate());
+                    notification = new Notification(notification.getType(), notification.getCoordX(), notification.getCoordY());
+                    notification.setDate(new Date(date));
                     notification.setUser(userDao.findById(id));
                     notificationDao.save(notification);
                 }else

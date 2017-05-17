@@ -19,7 +19,7 @@ public class Location {
 
 
     @EmbeddedId
-    @ApiModelProperty(value = "Id  of the signal of the keep alive.",required = true, dataType = "NiUnaMas.Models.LocationPK")
+    @ApiModelProperty(value = "Id  of the signal of the keep alive.",required = true, hidden = true, dataType = "NiUnaMas.Models.LocationPK")
     private LocationPK id = new LocationPK();
 
     @ManyToOne
